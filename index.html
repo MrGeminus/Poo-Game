@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>Games</title>
+</head>
+
+<body>
+    <canvas id="game"></canvas>
+    <div id="toolbar"><span id="score"></span>Score:</span> <span id="points">0</span><span
+            id="lives">Lives:</span><span id="hearts"><img src="img/heart.png" alt="" id="heart"></span>
+    </div>
+    <div id="start-menu">
+        <h1>The Poo Game</h1>
+        <p>The most shittiest game ever</p>
+        <button id="start">Start Game</button>
+        <button id="gameRules">Game Rules</button>
+        <button id="option">Options</button>
+        <button id="credits">Credits</button>
+    </div>
+    <div id="rulesPage">
+        <h2>Rules:</h2>
+        <ul>
+            <li>1. Eat as much poop as you can</li>
+            <li>2. Don't get caught while doing so</li>
+            <li>3. Don't fuck with Arnold Schwarzenegger</li>
+        </ul>
+        <button id="rulesPageBack">Back</button>
+    </div>
+    <img src="img/player.png" alt="player" id="player">
+    <img src="img/Poo.png" alt="poo" id="poo">
+    <img src="img/enemy.jpg" alt="enemy" id="enemy">
+    <div id="end-menu">
+        <img id="gameOverImg" src="img/Game Over.png" alt="Game Over">
+        <button id="restart">Play again?</button>
+    </div>
+    <div id="victory-menu">
+        <h2>Congratulation, you are full of shit!</h2>
+        <button id="nextLevel">Next Level</button>
+    </div>
+    <script src="game.js"></script>
+</body>
+
+</html>

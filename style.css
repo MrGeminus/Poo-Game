@@ -1,0 +1,123 @@
+*{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+#start-menu, #end-menu, #rulesPage, #victory-menu{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    position: fixed;
+    top:50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    width: 20rem;
+    height: 25rem;
+    background-color: #f0f0f0;
+    border-radius: 0.3rem;
+    box-shadow:
+  0 2.8px 2.2px rgba(0, 0, 0, 0.02),
+  0 6.7px 5.3px rgba(0, 0, 0, 0.028),
+  0 12.5px 10px rgba(0, 0, 0, 0.035),
+  0 22.3px 17.9px rgba(0, 0, 0, 0.042),
+  0 41.8px 33.4px rgba(0, 0, 0, 0.05),
+  0 100px 80px rgba(0, 0, 0, 0.07)
+;
+z-index: 1;
+}
+#end-menu, #victory-menu, #rulesPage{
+    display: none;
+}
+button {
+    color: #ffffff;
+    padding: 1rem;
+    margin: 0.5rem;
+    border: none;
+    border-radius: 0.3rem;
+}
+button#start:hover, button#option:hover, button#restart:hover, button#gameRules:hover, button#credits:hover, button#rulesPageBack:hover, button#nextLevel:hover {
+    background-color: #130c52;
+    transition: background-color ease-in 0.5s;
+}
+#start, #rulesPageBack, #nextLevel, #restart{
+    font-size: 1.1rem;
+    font-family: 'Fredoka One', cursive;
+    background-color: #3221cf;
+}
+#option, #gameRules, #credits{
+    font-size: 1.1rem;
+    font-family: 'Fredoka One', cursive;
+    background-color: #442fffad;
+}
+#gameOverImg{
+    width: 19rem;
+    height: 17rem;
+    margin: 0.5rem;
+}
+h1{
+    font-size: 2.3rem;
+     margin-bottom: 1rem;
+     color:  #000000;
+     font-family: 'Fredoka One', cursive;
+}
+p {
+    font-size: 0.9rem;
+    font-family: 'Fredoka One', cursive;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+}
+h2{
+    text-align: left;
+    color:  #000000;
+    font-family: 'Fredoka One', cursive;
+    padding: 0.5rem;
+}
+#victory-menu h2{
+    text-align: center;
+}
+ul{
+    text-align: left;
+    list-style: none;
+    margin: 0.5rem;
+    color:  #000000;
+    font-family: 'Fredoka One', cursive;
+}
+#score{
+    margin-right: 0.2rem;
+}
+#points {
+    margin-left: 0.2rem;
+    width: 7rem;
+}
+#lives {
+    margin-left: 1rem;
+    margin-right: 0.2rem;
+}
+#heart {
+    width: 1.4rem;
+    height: 1.4rem;
+    display: none;
+}
+canvas{
+    display: block;
+}
+#player, #poo, #enemy {
+display: none;
+background-color: transparent;
+}
+#toolbar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    font-size: 1.1rem;
+    color:  #000000;
+    font-family: 'Fredoka One', cursive;
+    padding: 1rem;
+}
