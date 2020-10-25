@@ -8,8 +8,8 @@ html, body {
     height: 100%;
     overflow: hidden;
 }
-#start-menu, #end-menu, #rulesPage, #victory-menu{
-    display: flex;
+#start-menu, #end-menu, #rulesPage, #victory-menu, #settingPage, #controlsPage, #logInPage, #pause-menu, #creditsPage{
+    display: none;
     flex-direction: column;
     text-align: center;
     justify-content: center;
@@ -31,8 +31,9 @@ html, body {
 ;
 z-index: 1;
 }
-#end-menu, #victory-menu, #rulesPage{
-    display: none;
+#pause-menu{
+    background: transparent;
+    box-shadow: none;
 }
 button {
     color: #ffffff;
@@ -41,19 +42,63 @@ button {
     border: none;
     border-radius: 0.3rem;
 }
-button#start:hover, button#option:hover, button#restart:hover, button#gameRules:hover, button#credits:hover, button#rulesPageBack:hover, button#nextLevel:hover {
+button#start:hover, button#setting:hover, button#restart:hover, button#gameRules:hover, button#credits:hover, button#rulesPageBack:hover, button#nextLevel:hover, button#controls:hover, button#language:hover, button#audio:hover, button#settingPageBack:hover, button#controlsPageBack:hover, button#controlsPageConfirm:hover, button#logIn:hover, button#logOut:hover, button#creditsPageBack:hover{
     background-color: #130c52;
     transition: background-color ease-in 0.5s;
 }
-#start, #rulesPageBack, #nextLevel, #restart{
+#start, #rulesPageBack, #nextLevel, #restart, #settingPageBack, #controlsPageBack, #controlsPageConfirm, #logIn, #creditsPageBack{
     font-size: 1.1rem;
     font-family: 'Fredoka One', cursive;
     background-color: #3221cf;
 }
-#option, #gameRules, #credits{
+input{
+    font-size: 1rem;
+    font-family: 'Fredoka One', cursive;
+    padding: 0.3rem;
+    margin: 0.5rem;
+    background-color: #c9c5c5;
+    border: 0.1rem solid #c9c5c5;
+    border-radius: 0.3rem;
+    outline-style: none;
+    transition: border ease-in 0.7s;
+}
+input:focus{
+    border: 0.1rem solid #442fffad;
+}
+.invalidInput{
+    border: 0.1rem solid #f30808;
+}
+label{
+    text-align: left;
+    font-size: 1rem;
+    font-family: 'Fredoka One', cursive;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+}
+#invalidTxtUser, #invalidTxtPass{
+    text-align: left;
+    color: #f30808;
+    font-size: 0.8rem;
+    margin-top: 0;
+    margin-left: 0.5rem;
+    margin-bottom: 0.5rem;
+    opacity: 0;
+    transition: all ease-in-out 0.7s;
+}
+#controlsPageConfirm{
+    visibility: hidden;
+    transition: visibility ease-out 1.5s;
+}
+#setting, #gameRules, #credits, #controls, #language, #audio, #logOut{
     font-size: 1.1rem;
     font-family: 'Fredoka One', cursive;
     background-color: #442fffad;
+}
+span#moveUp, span#moveDown, span#moveLeft, span#moveRight, span#run, span#pause, span#mainMenu{
+    float: right;
+}
+.active{
+    color: #442fffad;
 }
 #gameOverImg{
     width: 19rem;
@@ -67,16 +112,19 @@ h1{
      font-family: 'Fredoka One', cursive;
 }
 p {
-    font-size: 0.9rem;
+    font-size: 1rem;
     font-family: 'Fredoka One', cursive;
     margin-top: 1rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
 }
 h2{
     text-align: left;
     color:  #000000;
     font-family: 'Fredoka One', cursive;
     padding: 0.5rem;
+}
+#pause-menu h2{
+    text-align: center;
 }
 #victory-menu h2{
     text-align: center;

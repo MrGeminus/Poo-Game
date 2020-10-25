@@ -1,9 +1,30 @@
+import { users } from "./user.js";
+import { openSetting, mu, md, ml, mr, r, p, mm } from "./settings.js";
+export { showStartMenu, startMenu };
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 var gameRunning = false;
-let startMenu = document.getElementById('start-menu');
+var gamePaused = false;
+var gameOver = false;
+var victory = false;
+var keysArray = [];
+var startMenu = document.getElementById('start-menu');
+var pauseMenu = document.getElementById('pause-menu');
+var start = document.getElementById('start');
+var gameRules = document.getElementById('gameRules');
+var setting = document.getElementById('setting');
+var logOut = document.getElementById('logOut');
+var rulesPage = document.getElementById('rulesPage');
+var rulesPageBack = document.getElementById('rulesPageBack');
+var credits = document.getElementById('credits');
+var creditsPage = document.getElementById('creditsPage');
+var creditsPageBack = document.getElementById('creditsPageBack');
+var endMenu = document.getElementById('end-menu');
+var restart = document.getElementById('restart');
+var victroryMenu = document.getElementById('victory-menu');
+var nextLevel = document.getElementById('nextLevel');
 const playerImage = document.getElementById("player");
 const pooImage = document.getElementById("poo");
 const enemyImage = document.getElementById("enemy");
@@ -17,9 +38,8 @@ const player = {
     playerHeight: 50,
     playerXCoordinate: 50,
     playerYCoordinate: 50,
-    playerSpeed: 10,
-    xValocity: 0,
-    yValocity: 0,
+    xValocity: 5,
+    yValocity: 5,
     maxLives: 3,
 }
 class Heart {
@@ -51,16 +71,16 @@ class Poo {
         ctx.drawImage(this.pooImage, this.pooXCoordinate, this.pooYCoordinate, this.pooWidth, this.pooHeight);
     }
     collision() {
-        if (this.pooXCoordinate <= 0) {
+        if (this.pooXCoordinate <= 23) {
             this.pooXValocity *= -1;
         }
-        if (this.pooXCoordinate + this.pooWidth >= canvas.width) {
+        if (this.pooXCoordinate + this.pooWidth >= canvas.width - 23) {
             this.pooXValocity *= -1;
         }
-        if (this.pooYCoordinate <= 0) {
+        if (this.pooYCoordinate <= 58) {
             this.pooYValocity *= -1;
         }
-        if (this.pooYCoordinate + this.pooHeight >= canvas.height) {
+        if (this.pooYCoordinate + this.pooHeight >= canvas.height - 18) {
             this.pooYValocity *= -1;
         }
     }
@@ -87,16 +107,16 @@ class Enemy {
         ctx.drawImage(this.enemyImage, this.enemyXCoordinate, this.enemyYCoordinate, this.enemyWidth, this.enemyHeight);
     }
     collision() {
-        if (this.enemyXCoordinate <= 0) {
+        if (this.enemyXCoordinate <= 23) {
             this.enemyXValocity *= -1;
         }
-        if (this.enemyXCoordinate + this.enemyWidth >= canvas.width) {
+        if (this.enemyXCoordinate + this.enemyWidth >= canvas.width - 23) {
             this.enemyXValocity *= -1;
         }
-        if (this.enemyYCoordinate <= 0) {
+        if (this.enemyYCoordinate <= 58) {
             this.enemyYValocity *= -1;
         }
-        if (this.enemyYCoordinate + this.enemyHeight >= canvas.height) {
+        if (this.enemyYCoordinate + this.enemyHeight >= canvas.height - 18) {
             this.enemyYValocity *= -1;
         }
     }
@@ -108,44 +128,209 @@ class Enemy {
     }
 }
 function drawPlayer() {
-    ctx.drawImage(playerImage, player.playerXCoordinate, player.playerYCoordinate, player.playerWidth, player.playerHeight)
+    ctx.drawImage(playerImage, player.playerXCoordinate, player.playerYCoordinate, player.playerWidth, player.playerHeight);
+}
+function drawCanvasBorder() {
+    ctx.beginPath();
+    ctx.lineWidth = "3";
+    ctx.strokeStyle = "black";
+    ctx.rect(20, 55, canvas.width - 40, canvas.height - 75);
+    ctx.stroke();
 }
 function clearBoard() {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
 }
-function movePlayer() {
-    player.playerXCoordinate += player.xValocity;
-    player.playerYCoordinate += player.yValocity;
-    detectCollision();
-}
-function victroryScreen() {
-    let victroryMenu = document.getElementById('victory-menu');
-    victroryMenu.style.display = "flex";
-    gameRunning = false;
-}
 function detectCollision() {
-    if ((player.playerXCoordinate <= 0 && !immortal) ||
-        (player.playerXCoordinate + player.playerWidth >= canvas.width && !immortal) ||
-        (player.playerYCoordinate <= 0 && !immortal) ||
-        (player.playerYCoordinate + player.playerHeight >= canvas.height && immortal)) {
+    if ((player.playerXCoordinate <= 20 && !immortal) ||
+        (player.playerXCoordinate + player.playerWidth >= canvas.width - 23 && !immortal) ||
+        (player.playerYCoordinate <= 55 && !immortal) ||
+        (player.playerYCoordinate + player.playerHeight >= canvas.height - 18 && !immortal)) {
         if (hearts.length === 1) {
             hearts.pop();
             endGame();
         }
         else {
             hearts.pop();
-            player.playerXCoordinate = canvas.width;
-            player.playerYCoordinate = canvas.height;
+            player.playerXCoordinate = canvas.width / 2;
+            player.playerYCoordinate = canvas.height / 2;
             immortal = true;
             setTimeout(() => { immortal = false; }, 1500)
         }
     }
 }
+function pauseGame(e) {
+    if (gamePaused === false && e.key === p) {
+        gamePaused = true;
+        pauseMenu.style.display = "flex";
+    }
+    else if (gamePaused === true && e.key === p) {
+        gamePaused = false;
+        pauseMenu.style.display = "none";
+        gameUpdate();
+    }
+    else if (gamePaused === false && e.key === mm) {
+        gamePaused = true;
+        startMenu.style.display = "flex";
+    }
+    else if (gamePaused === true && e.key === mm) {
+        gamePaused = false;
+        startMenu.style.display = "none";
+        gameUpdate();
+    }
+}
+function checkIfUserHasPausedTheGame() {
+    document.addEventListener("keydown", pauseGame);
+}
+function keyPressed(e) {
+    keysArray[e.key] = true;
+}
+function keyReleased(e) {
+    keysArray[e.key] = false;
+}
+function movePlayer() {
+    if (mu in keysArray && keysArray[mu]) {
+        player.playerYCoordinate -= player.yValocity;
+    }
+    if (md in keysArray && keysArray[md]) {
+        player.playerYCoordinate += player.yValocity;
+
+    }
+    if (ml in keysArray && keysArray[ml]) {
+        player.playerXCoordinate -= player.xValocity;
+    }
+    if (mr in keysArray && keysArray[mr]) {
+        player.playerXCoordinate += player.xValocity;
+
+    }
+}
+function startGame() {
+    startMenu.style.display = "none";
+    gameRunning = true;
+    gameOver = false;
+    victory = false;
+    for (let i = 0; i < player.maxLives; i++) {
+        hearts.push(new Heart(heartImage, 255 + [i] * 25, 15, 25, 25))[i];
+    }
+    player.playerXCoordinate = (Math.random() * (canvas.width - 2 * player.playerWidth)) + player.playerWidth;
+    player.playerYCoordinate = (Math.random() * (canvas.height - 2 * player.playerHeight)) + player.playerHeight;
+    for (let i = 0; i < pooMax; i++) {
+        poos.push(new Poo(pooImage, (Math.random() * (canvas.width - 100)) + 50, (Math.random() * (canvas.height - 100)) + 50, 50, 50, Math.random() * 3, Math.random() * 3))[i];
+    }
+    for (let i = 0; i < enemyMax; i++) {
+        enemies.push(new Enemy(enemyImage, (Math.random() * (canvas.width - 100)) + 50, (Math.random() * (canvas.height - 100)) + 50, 50, 50, Math.random() * 3, Math.random() * 3))[i];
+    }
+    document.addEventListener("keydown", keyPressed, true);
+    document.addEventListener("keyup", keyReleased, true);
+    gameUpdate();
+}
+function showStartMenu() {
+    startMenu.style.display = "flex";
+    function disableStartKeyAndStartGame() {
+        if (!gameRunning && !gameOver && !victory) {
+            start.removeEventListener("click", startButtonPressed);
+            document.removeEventListener("keydown", startKeyPressed);
+            startGame();
+        }
+    }
+    function startButtonPressed() {
+        disableStartKeyAndStartGame();
+    };
+    start.addEventListener("click", startButtonPressed);
+    function startKeyPressed(e) {
+        if (e.key === r && !gameRunning && !gameOver && !victory) {
+            disableStartKeyAndStartGame();
+        }
+    };
+    document.addEventListener("keydown", startKeyPressed);
+    function rulesButtonPressed() {
+        document.removeEventListener("keydown", startKeyPressed);
+        startMenu.style.display = "none";
+        rulesPage.style.display = "flex";
+        function goBackToStartMenu() {
+            rulesPage.style.display = "none";
+            startMenu.style.display = "flex";
+        };
+        rulesPageBack.addEventListener("click", goBackToStartMenu)
+    };
+    gameRules.addEventListener("click", rulesButtonPressed);
+    function disableStartKeyPressed() {
+        document.removeEventListener("keydown", startKeyPressed);
+        openSetting();
+    }
+    setting.addEventListener("click", disableStartKeyPressed);
+    function openCredits() {
+        document.removeEventListener("keydown", startKeyPressed);
+        startMenu.style.display = "none";
+        creditsPage.style.display = "flex";
+        function creditsPageBackIsPressed() {
+            creditsPage.style.display = "none";
+            startMenu.style.display = "flex";
+        };
+        creditsPageBack.addEventListener("click", creditsPageBackIsPressed)
+    }
+    credits.addEventListener("click", openCredits);
+    function logOutUser() {
+        document.removeEventListener("keydown", startKeyPressed);
+        localStorage.removeItem("storedID");
+        localStorage.removeItem("storedLogInInfo");
+        location.reload();
+    }
+    logOut.addEventListener("click", logOutUser);
+}
+function endGame() {
+    clearBoard();
+    document.removeEventListener("keydown", keyPressed);
+    document.removeEventListener("keyup", keyReleased);
+    gameRunning = false;
+    gameOver = true;
+    enemies.length = 0;
+    poos.length = 0;
+    points = 0;
+    score.innerText = points;
+    endMenu.style.display = "flex";
+    function restartGame() {
+        endMenu.style.display = "none";
+        document.removeEventListener("keydown", restartKeyPressed);
+        restart.removeEventListener("click", restartGame);
+        startGame();
+    };
+    restart.addEventListener("click", restartGame);
+    function restartKeyPressed(e) {
+        if (e.key === r && !gameRunning && gameOver && !victory) {
+            endMenu.style.display = "none";
+            restart.removeEventListener("click", restartGame);
+            document.removeEventListener("keydown", restartKeyPressed);
+            startGame();
+        }
+    }
+    document.addEventListener("keydown", restartKeyPressed);
+}
+function victroryScreen() {
+    clearBoard();
+    victory = true;
+    gameRunning = false;
+    document.removeEventListener("keydown", keyPressed);
+    document.removeEventListener("keyup", keyReleased);
+    enemies.length = 0;
+    poos.length = 0;
+    victroryMenu.style.display = "flex";
+    users[Number(localStorage.getItem("storedID")) - 1].globalScore = points;
+    localStorage.setItem("newGlobalScore", `${users[Number(localStorage.getItem("storedID")) - 1].globalScore}`);
+    points = 0;
+    score.innerText = points;
+    function repeatLevel() {
+        victroryMenu.style.display = "none";
+        nextLevel.removeEventListener("click", repeatLevel)
+        startGame();
+    }
+    nextLevel.addEventListener("click", repeatLevel)
+}
 function gameUpdate() {
     clearBoard();
-    if (gameRunning) {
-        drawPlayer();
-    }
+    movePlayer();
+    drawPlayer();
+    drawCanvasBorder();
+    detectCollision();
     hearts.forEach(heart => {
         heart.drawHeart();
     });
@@ -194,94 +379,12 @@ function gameUpdate() {
             }
         });
     });
-    movePlayer();
-    if (gameRunning) {
+    if (gameRunning && !gameOver && !victory) {
+        checkIfUserHasPausedTheGame();
+    }
+    if (gameRunning && !gamePaused && !gameOver && !victory) {
         requestAnimationFrame(gameUpdate);
     }
 }
-function keyPressed(e) {
-    if (e.key === 'ArrowRight' || e.key === 'Right') {
-        player.xValocity = player.playerSpeed;
-    }
-    else if (e.key === 'ArrowLeft' || e.key === 'Left') {
-        player.xValocity = -player.playerSpeed;
-    }
-    else if (e.key === 'ArrowUp' || e.key === 'Up') {
-        player.yValocity = -player.playerSpeed;
-    }
-    else if (e.key === 'ArrowDown' || e.key === 'Down') {
-        player.yValocity = player.playerSpeed;
-    }
-}
-function keyReleased(e) {
-    if (e.key == 'ArrowRight' || e.key == 'ArrowLeft' || e.key == 'ArrowUp' || e.key == 'ArrowDown' || e.key == 'Right' || e.key == 'Left' || e.key == 'Up' || e.key == 'Down') {
-        player.xValocity = 0;
-        player.yValocity = 0;
-    }
-}
-function startGame() {
-    startMenu.style.display = "none";
-    gameRunning = true;
-    for (let i = 0; i < player.maxLives; i++) {
-        hearts.push(new Heart(heartImage, 255 + [i] * 25, 15, 25, 25))[i];
-    }
-    player.playerXCoordinate = (Math.random() * (canvas.width - 2 * player.playerWidth)) + player.playerWidth;
-    player.playerYCoordinate = (Math.random() * (canvas.height - 2 * player.playerHeight)) + player.playerHeight;
-    for (let i = 0; i < pooMax; i++) {
-        poos.push(new Poo(pooImage, (Math.random() * (canvas.width - 100)) + 50, (Math.random() * (canvas.height - 100)) + 50, 50, 50, Math.random() * 3, Math.random() * 3))[i];
-    }
-    for (let i = 0; i < enemyMax; i++) {
-        enemies.push(new Enemy(enemyImage, (Math.random() * (canvas.width - 100)) + 50, (Math.random() * (canvas.height - 100)) + 50, 50, 50, Math.random() * 3, Math.random() * 3))[i];
-    }
-    gameUpdate();
-    document.addEventListener("keydown", keyPressed);
-    document.addEventListener("keyup", keyReleased);
-}
-function startButtonPressed() {
-    startGame();
-    start.removeEventListener("click", startButtonPressed);
-};
-var start = document.getElementById('start');
-start.addEventListener("click", startButtonPressed);
-function startKeyPressed(e) {
-    if (e.key === 'Enter') {
-        startGame();
-        document.removeEventListener("keydown", startKeyPressed);
-    }
-};
-document.addEventListener("keydown", startKeyPressed);
-let gameRules = document.getElementById('gameRules').addEventListener("click", () => {
-    rulesPage.style.display = "flex";
-    let rulesPageBack = document.getElementById('rulesPageBack').addEventListener("click", () => {
-        rulesPage.style.display = "none";
-    });
-});
-function endGame() {
-    clearBoard();
-    document.removeEventListener("keydown", keyPressed);
-    document.removeEventListener("keyup", keyReleased);
-    gameRunning = false;
-    enemies.length = 0;
-    poos.length = 0;
-    points = 0;
-    score.innerText = points;
-    player.xValocity = 0;
-    player.yValocity = 0;
-    let endMenu = document.getElementById('end-menu');
-    endMenu.style.display = "flex";
-    let restart = document.getElementById('restart');
-    function restartGame() {
-        endMenu.style.display = "none";
-        startGame();
-        restart.removeEventListener("click", restartGame);
-    };
-    restart.addEventListener("click", restartGame);
-    function restartKeyPressed(e) {
-        if (e.key === 'Enter') {
-            endMenu.style.display = "none";
-            startGame();
-            document.removeEventListener("keydown", restartKeyPressed);
-        }
-    }
-    document.addEventListener("keydown", restartKeyPressed);
-}
+
+

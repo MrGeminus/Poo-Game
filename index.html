@@ -14,13 +14,23 @@
     <div id="toolbar"><span id="score"></span>Score:</span> <span id="points">0</span><span
             id="lives">Lives:</span><span id="hearts"><img src="img/heart.png" alt="" id="heart"></span>
     </div>
-    <div id="start-menu">
+    <div id="logInPage">
         <h1>The Poo Game</h1>
-        <p>The most shittiest game ever</p>
+        <p>The most shittiest game ever!</p>
+        <label for="formUserName">User Name:</label>
+        <input id="formUserName" type="text">
+        <p id="invalidTxtUser">The username that you've entered is incorrect</p>
+        <label for="formUserPassword">Password:</label>
+        <input id="formUserPassword" type="password">
+        <p id="invalidTxtPass">The password that you've entered is incorrect</p>
+        <button id="logIn">Log In</button>
+    </div>
+    <div id="start-menu">
         <button id="start">Start Game</button>
         <button id="gameRules">Game Rules</button>
-        <button id="option">Options</button>
+        <button id="setting">Settings</button>
         <button id="credits">Credits</button>
+        <button id="logOut">Log Out</button>
     </div>
     <div id="rulesPage">
         <h2>Rules:</h2>
@@ -31,6 +41,28 @@
         </ul>
         <button id="rulesPageBack">Back</button>
     </div>
+    <div id="settingPage">
+        <button id="controls">Controls Settings</button>
+        <button id="language">Language Settings</button>
+        <button id="audio">Audio Settings</button>
+        <button id="settingPageBack">Back</button>
+    </div>
+    <div id="controlsPage">
+        <ul>
+            <li id="moveUpControl">Move Up:<span id="moveUp">ArrowUp</span></li>
+            <li id="moveDownControl">Move Down:<span id="moveDown">ArrowDown</span></li>
+            <li id="moveLeftControl">Move Left:<span id="moveLeft">ArrowLeft</span></li>
+            <li id="moveRightControl">Move Right:<span id="moveRight">ArrowRight</span></li>
+            <li id="startGameControl">Start Game:<span id="run">Enter</span></li>
+            <li id="pauseGameControl">Pause Game:<span id="pause">Pause</span></li>
+            <li id="mainMenuControl">Main Menu:<span id="mainMenu">Escape</span></li>
+        </ul>
+        <button id="controlsPageConfirm">Confirm Changes</button>
+        <button id="controlsPageBack">Back</button>
+    </div>
+    <div id="creditsPage">
+        <button id="creditsPageBack">Back</button>
+    </div>
     <img src="img/player.png" alt="player" id="player">
     <img src="img/Poo.png" alt="poo" id="poo">
     <img src="img/enemy.jpg" alt="enemy" id="enemy">
@@ -38,11 +70,17 @@
         <img id="gameOverImg" src="img/Game Over.png" alt="Game Over">
         <button id="restart">Play again?</button>
     </div>
+    <div id="pause-menu">
+        <h2>Game Paused</h2>
+    </div>
     <div id="victory-menu">
         <h2>Congratulation, you are full of shit!</h2>
-        <button id="nextLevel">Next Level</button>
+        <button id="nextLevel">Replay</button>
     </div>
-    <script src="game.js"></script>
+    <script src="login.js" type="module"></script>
+    <script src="game.js" type="module"></script>
+    <script src="settings.js" type="module"></script>
+    <script src="user.js" type="module"></script>
 </body>
 
 </html>
