@@ -1,10 +1,8 @@
 import { users } from "./user.js";
 import { openSetting, mu, md, ml, mr, r, p, mm } from "./settings.js";
 export { showStartMenu, startMenu };
-const canvas = document.getElementById("game");
-const ctx = canvas.getContext('2d');
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+var canvas = document.getElementById("game");
+var ctx = canvas.getContext('2d');
 var gameRunning = false;
 var gamePaused = false;
 var gameOver = false;
@@ -129,6 +127,10 @@ class Enemy {
 }
 function drawPlayer() {
     ctx.drawImage(playerImage, player.playerXCoordinate, player.playerYCoordinate, player.playerWidth, player.playerHeight);
+}
+function drawCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 }
 function drawCanvasBorder() {
     ctx.beginPath();
@@ -326,6 +328,7 @@ function victroryScreen() {
     nextLevel.addEventListener("click", repeatLevel)
 }
 function gameUpdate() {
+    drawCanvas();
     clearBoard();
     movePlayer();
     drawPlayer();
