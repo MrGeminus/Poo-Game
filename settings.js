@@ -1,4 +1,4 @@
-import { startMenu, continueGame, creditsPageBack, pauseTitle, vitoryTitle, exitMainMenu, rulesTitle, ruleOne, ruleTwo, ruleThree, pooEatenSound, childrenSound, countdownSound, deadSound, gameOverSound, backgroundMusic, hearts } from "./game.js";
+import { start, startMenu, continueGame, creditsPageBack, pauseTitle, vitoryTitle, exitMainMenu, rulesTitle, ruleOne, ruleTwo, ruleThree, pooEatenSound, childrenSound, countdownSound, deadSound, gameOverSound, backgroundMusic, hearts } from "./game.js";
 export { openSetting, mu, md, ml, mr, r, p, mm };
 export { openControls, translateGame };
 var moveUpControl = document.getElementById('moveUpControl');
