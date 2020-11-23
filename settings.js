@@ -272,6 +272,7 @@ var alreadyListeningMenu = false;
 function translateGame() {
     if (localStorage.getItem("lang") === "undefined") {
         let prefLang = localStorage.getItem("lang");
+        console.log(prefLang);
         start.textContent = languageArray[prefLang].start;
         continueGame.textContent = languageArray[prefLang].continueGame;
         exitMainMenu.textContent = languageArray[prefLang].exitMainMenu;
