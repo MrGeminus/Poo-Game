@@ -1,6 +1,6 @@
 import { users } from "./user.js";
 import { openSetting, mu, md, ml, mr, r, p, mm } from "./settings.js";
-export { showStartMenu, startMenu, continueGame, creditsPageBack, pauseTitle, vitoryTitle, exitMainMenu, rulesTitle, ruleOne, ruleTwo, ruleThree, pooEatenSound, childrenSound, countdownSound, deadSound, gameOverSound, backgroundMusic, hearts };
+export { start, showStartMenu, startMenu, continueGame, creditsPageBack, pauseTitle, vitoryTitle, exitMainMenu, rulesTitle, ruleOne, ruleTwo, ruleThree, pooEatenSound, childrenSound, countdownSound, deadSound, gameOverSound, backgroundMusic, hearts };
 var canvas = document.getElementById("game");
 var ctx = canvas.getContext('2d');
 var gameRunning = false;
