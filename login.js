@@ -1,5 +1,5 @@
 import { users } from "./user.js";
-import { openControls } from "./settings.js";
+import { openSetting, translateGame } from "./settings.js";
 import { showStartMenu } from "./game.js";
 var InputedUserName = "";
 var InputedUserPasword = "";
@@ -30,6 +30,7 @@ function verifyLoginCredentials() {
             localStorage.setItem("storedID", `${user.userId}`);
             localStorage.setItem("storedLogInInfo", `${user.logedIn}`);
             logInPage.style.display = "none";
+            translateGame();
             showStartMenu();
         }
         else if (!(InputedUserName === user.userName) && InputedUserPasword === user.userPassword) {
@@ -52,10 +53,17 @@ function checkIfPressedKeyIsEnter(e) {
 function checkifUserIsAlreadyLoggedIn() {
     if (localStorage.getItem("storedLogInInfo") === "true") {
         logInPage.style.display = "none";
-        showStartMenu();
+        if (!(localStorage.getItem("settingPageOpen") === "true")) {
+            translateGame();
+            showStartMenu();
+        }
+        else {
+            openSetting();
+        }
     }
     else {
         logInPage.style.display = "flex";
+        translateGame();
         logIn.addEventListener("click", verifyLoginCredentials);
         document.addEventListener("keydown", checkIfPressedKeyIsEnter);
     }

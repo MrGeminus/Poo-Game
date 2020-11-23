@@ -6,21 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <title>Games</title>
+    <title>The Poo Game</title>
 </head>
 
 <body>
     <canvas id="game"></canvas>
-    <div id="toolbar"><span id="score"></span>Score:</span> <span id="points">0</span><span
-            id="lives">Lives:</span><span id="hearts"><img src="img/heart.png" alt="" id="heart"></span>
+    <div id="toolbar"><span id="score"></span><span id="points">0</span><span id="lives">Lives:</span><span
+            id="hearts"><img src="img/heart.png" alt="" id="heart"></span>
     </div>
     <div id="logInPage">
         <h1>The Poo Game</h1>
-        <p>The most shittiest game ever!</p>
-        <label for="formUserName">User Name:</label>
+        <p id="interductionText">The most shittiest game ever!</p>
+        <label id="labelFormUserName" for="formUserName">User Name:</label>
         <input id="formUserName" type="text">
         <p id="invalidTxtUser">The username that you've entered is incorrect</p>
-        <label for="formUserPassword">Password:</label>
+        <label id="labelFormUserPassword" for="formUserPassword">Password:</label>
         <input id="formUserPassword" type="password">
         <p id="invalidTxtPass">The password that you've entered is incorrect</p>
         <button id="logIn">Log In</button>
@@ -32,12 +32,18 @@
         <button id="credits">Credits</button>
         <button id="logOut">Log Out</button>
     </div>
+    <div id="escape-menu">
+        <button id="continue">Continue</button>
+        <button id="exitMainMenu">Main Menu</button>
+        <button id="gameRules">Game Rules</button>
+        <button id="setting">Settings</button>
+    </div>
     <div id="rulesPage">
-        <h2>Rules:</h2>
+        <h2 id="rulesTitle">Rules:</h2>
         <ul>
-            <li>1. Eat as much poop as you can</li>
-            <li>2. Don't get caught while doing so</li>
-            <li>3. Don't fuck with Arnold Schwarzenegger</li>
+            <li id="ruleOne">1. Eat as much poop as you can</li>
+            <li id="ruleTwo">2. Don't get caught while doing so</li>
+            <li id="ruleThree">3. Don't fuck with Arnold Schwarzenegger</li>
         </ul>
         <button id="rulesPageBack">Back</button>
     </div>
@@ -49,34 +55,125 @@
     </div>
     <div id="controlsPage">
         <ul>
-            <li id="moveUpControl">Move Up:<span id="moveUp">ArrowUp</span></li>
-            <li id="moveDownControl">Move Down:<span id="moveDown">ArrowDown</span></li>
-            <li id="moveLeftControl">Move Left:<span id="moveLeft">ArrowLeft</span></li>
-            <li id="moveRightControl">Move Right:<span id="moveRight">ArrowRight</span></li>
-            <li id="startGameControl">Start Game:<span id="run">Enter</span></li>
-            <li id="pauseGameControl">Pause Game:<span id="pause">Pause</span></li>
-            <li id="mainMenuControl">Main Menu:<span id="mainMenu">Escape</span></li>
+            <li id="moveUpControl"><span id="moveUpControlSpan">Move Up:</span><span id="moveUp">ArrowUp</span></li>
+            <li id="moveDownControl"><span id="moveDownControlSpan">Move Down:</span><span
+                    id="moveDown">ArrowDown</span>
+            </li>
+            <li id="moveLeftControl"><span id="moveLeftControlSpan">Move Left:</span><span
+                    id="moveLeft">ArrowLeft</span>
+            </li>
+            <li id="moveRightControl"><span id="moveRightControlSpan">Move Right:</span><span
+                    id="moveRight">ArrowRight</span></li>
+            <li id="startGameControl"><span id="startGameControlSpan">Start Game:</span><span id="run">Enter</span></li>
+            <li id="pauseGameControl"><span id="pauseGameControlSpan">Pause Game:</span><span id="pause">Pause</span>
+            </li>
+            <li id="mainMenuControl"><span id="mainMenuControlSpan">Main Menu:</span><span id="mainMenu">Escape</span>
+            </li>
         </ul>
         <button id="controlsPageConfirm">Confirm Changes</button>
         <button id="controlsPageBack">Back</button>
     </div>
+    <div id="languagePage">
+        <div class="languageOption">
+            <label class="srb" for="serbian">Serbian</label>
+            <input id="serbian" type="radio" name="preferredLanguage">
+        </div>
+        <div class="languageOption">
+            <label class="de" for="german">German</label>
+            <input id="german" type="radio" name="preferredLanguage">
+        </div>
+        <div class="languageOption">
+            <label class="en" for="english">English</label>
+            <input id="english" type="radio" name="preferredLanguage">
+        </div>
+        <button id="languagePageConfirm">Confirm Changes</button>
+        <button id="languagePageBack">Back</button>
+    </div>
+    <div id="audioPage">
+        <div id="musicOptions">
+            <label for="musicVolumeController">Music</label>
+            <input id="musicVolumeController" type="range" min="0" max="100" value="50" step="1">
+        </div>
+        <div id="soundEffectOptions">
+            <label for="soundEffectVolumeController">Sound Effects</label>
+            <input id="soundEffectVolumeController" type="range" min="0" max="100" value="50" step="1">
+        </div>
+        <button id="audioPageBack">Back</button>
+    </div>
     <div id="creditsPage">
+        <div id="placeForCredits">
+            <h4>This game has been inspired by the Poo Game from <a
+                    href="https://www.youtube.com/user/ChiliTomatoNoodle" target="blank">ChiliTomatoNoodle</a>. He is an
+                awesome dude, so please show him some love and sub to
+                his
+                channel.</h4>
+            <h4>Music and sound effects which have been used for this game have been obtained from:</h5>
+                <p>1. <a href="https://www.fesliyanstudios.com" target="blank">Fesliyanstudios</a>
+                <p>2. Additional sound effects from <a href="https://www.zapsplat.com“" target="blank">Zapsplat</a></p>
+                <p>
+                <h4>Icons and images are from the following sourses</h5>
+                    <a href="https://www.freepik.com/vectors/character">Character vector created by brgfx -
+                        www.freepik.com</a>
+                    Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a
+                        href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
+                    Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a
+                        href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
+                    </p>
+                    <h4>Also big thanks to the Poo Game testers.</h5>
+        </div>
         <button id="creditsPageBack">Back</button>
     </div>
     <img src="img/player.png" alt="player" id="player">
     <img src="img/Poo.png" alt="poo" id="poo">
     <img src="img/enemy.jpg" alt="enemy" id="enemy">
+    <svg id="go" enable-background="new 0 0 1200 512" viewBox="310 0 512 512" xmlns="http://www.w3.org/2000/svg">
+        <g>
+            <path
+                d="M260.464 512C383.734 512 465.327 444.606 480.032 432.459L480.035 432.457C481.272 431.435 482.036 430.805 482.31 430.639V224.213H241.761V332.421H353.567V368.573C330.082 384.335 292.294 400.887 254.196 400.887C174.587 400.887 130.75 347.523 130.75 250.623C130.75 160.652 174.939 111.111 255.181 111.111C303.182 111.111 337.586 134.094 349.579 174.158L353.42 187.019L479.145 164.446C477.899 161.517 476.668 156.899 475.105 151.044L475.105 151.042C463.722 108.379 434.807 0 255.182 0C100.173 0 0.0216064 100.478 0.0216064 254.418C0.0216064 410.292 102.247 512 260.464 512ZM1032 45C1032 20.147 1052.24 0 1077.2 0C1102.17 0 1122.41 20.147 1122.41 45V344C1122.41 368.853 1102.17 389 1077.2 389C1052.24 389 1032 368.853 1032 344V45ZM317.941 190H315.43V188H317.941V190ZM1077.2 422C1052.24 422 1032 442.147 1032 467C1032 491.853 1052.24 512 1077.2 512C1102.17 512 1122.41 491.853 1122.41 467C1122.41 442.147 1102.17 422 1077.2 422ZM996.259 256.63C996.259 413.529 904.112 512 755.799 512C606.69 512 514.073 414.379 514.073 258.856C514.073 97.401 603.967 0 754.533 0C903.642 0 996.259 98.954 996.259 256.63ZM755.49 111.113C681.767 111.113 641.168 162.455 641.168 255.678C641.168 346.601 683.901 400.888 755.49 400.889C827.521 400.889 868.841 347.51 868.841 254.419C868.841 162.002 828.58 111.113 755.49 111.113Z"
+                fill="#3221cf" />
+        </g>
+    </svg>
+    <svg id="nrOne" enable-background="new 0 0 512 512" height="512" viewBox="0 0 512 512" width="512"
+        xmlns="http://www.w3.org/2000/svg">
+        <g id="_x31__1_">
+            <path
+                d="m376 512v-512h-99.902l-3.56 9.932c-9.419 26.294-27.202 49.746-52.837 69.697-26.528 20.684-51.211 34.849-73.359 42.1l-10.342 3.383v114.771l19.702-6.519c36.387-12.012 69.448-29.268 98.672-51.445v330.081z"
+                fill="#442fffad" />
+        </g>
+    </svg>
+    <svg id="nrTwo" enable-background="new 0 0 512 512" height="512" viewBox="0 0 512 512" width="512"
+        xmlns="http://www.w3.org/2000/svg">
+        <g id="_x32_">
+            <path
+                d="m436.879 148.037c0-73.682-52.808-148.037-170.786-148.037-105.308 0-166.875 53.555-178.067 154.878l-1.67 15.103 124.336 12.114 1.025-15.439c3.545-53.467 28.286-60.674 52.031-60.674 32.285 0 48.647 16.348 48.647 48.589 0 94.33-216.104 166.375-235.43 340.774l-1.844 16.655h361.758v-117.107h-171.797c54.405-60.11 171.797-126.067 171.797-246.856z"
+                fill="#442fffad" />
+        </g>
+    </svg>
+    <svg id="nrThree" enable-background="new 0 0 512 512" height="512" viewBox="0 0 512 512" width="512"
+        xmlns="http://www.w3.org/2000/svg">
+        <g id="_x33_">
+            <path
+                d="m363.395 231.083c33.926-25.107 51.079-56.792 51.079-94.526 0-66.636-60.732-136.557-162.378-136.557-158.476 0-167.63 144.392-171.108 151.117l118.74 19.087c1.679-4.734-1.149-65.142 49.658-65.142 45.748 0 47.476 48.183 27.715 67.441-13.91 13.568-22.534 11.392-65.405 14.78l-15.601 109.058c14.685-3.471 39.459-12.041 61.758-12.041 25.591 0 51.416 18.164 51.416 58.755 0 43.682-27.524 63.237-54.8 63.237-57.998 0-55.866-65.857-57.524-70.195l-121.787 13.975c1.564 3.002 3.976 161.928 179.985 161.928 101.895 0 181.699-73.085 181.699-165.092 0-52.207-27.934-94.936-73.447-115.825z"
+                fill="#442fffad" />
+        </g>
+    </svg>
     <div id="end-menu">
         <img id="gameOverImg" src="img/Game Over.png" alt="Game Over">
         <button id="restart">Play again?</button>
     </div>
     <div id="pause-menu">
-        <h2>Game Paused</h2>
+        <h2 id="pauseTitle">Game Paused</h2>
     </div>
     <div id="victory-menu">
-        <h2>Congratulation, you are full of shit!</h2>
+        <h2 id="vitoryTitle">Congratulation, you are full of shit!</h2>
         <button id="nextLevel">Replay</button>
     </div>
+    <audio src="sound/bite.mp3" id="pooEatenSound" defaultMuted="true"></audio>
+    <audio src="sound/childrenSound.mp3" id="childrenSound" defaultMuted="true"></audio>
+    <audio src="sound/countdown.wav" id="countdown" defaultMuted="true"></audio>
+    <audio src="sound/dead.mp3" id="dead" defaultMuted="true"></audio>
+    <audio src="sound/gameOver.mp3" id="gameOver" defaultMuted="true"></audio>
+    <audio src="sound/background.mp3" id="background"></audio>
     <script src="login.js" type="module"></script>
     <script src="game.js" type="module"></script>
     <script src="settings.js" type="module"></script>

@@ -1,20 +1,38 @@
 import { users } from "./user.js";
 import { openSetting, mu, md, ml, mr, r, p, mm } from "./settings.js";
-export { showStartMenu, startMenu };
+export { showStartMenu, startMenu, continueGame, creditsPageBack, pauseTitle, vitoryTitle, exitMainMenu, rulesTitle, ruleOne, ruleTwo, ruleThree, pooEatenSound, childrenSound, countdownSound, deadSound, gameOverSound, backgroundMusic, hearts };
 var canvas = document.getElementById("game");
 var ctx = canvas.getContext('2d');
 var gameRunning = false;
 var gamePaused = false;
 var gameOver = false;
 var victory = false;
+var countDownHasStarted = false;
 var keysArray = [];
+const countdownOne = document.getElementById("nrOne");
+const countdownTwo = document.getElementById("nrTwo");
+const countdownThree = document.getElementById("nrThree");
+const countdownGo = document.getElementById("go");
+var pooEatenSound = document.getElementById("pooEatenSound");
+var childrenSound = document.getElementById("childrenSound");
+var countdownSound = document.getElementById("countdown");
+var deadSound = document.getElementById("dead");
+var gameOverSound = document.getElementById("gameOver");
+var backgroundMusic = document.getElementById("background");
 var startMenu = document.getElementById('start-menu');
+var continueGame = document.getElementById('continue');
+var exitMainMenu = document.getElementById('exitMainMenu');
 var pauseMenu = document.getElementById('pause-menu');
 var start = document.getElementById('start');
 var gameRules = document.getElementById('gameRules');
 var setting = document.getElementById('setting');
 var logOut = document.getElementById('logOut');
 var rulesPage = document.getElementById('rulesPage');
+var rulesTitle = document.getElementById('rulesTitle');
+var ruleOne = document.getElementById('ruleOne');
+var ruleTwo = document.getElementById('ruleTwo');
+var ruleThree = document.getElementById('ruleThree');
+var toolbar = document.getElementById('toolbar');
 var rulesPageBack = document.getElementById('rulesPageBack');
 var credits = document.getElementById('credits');
 var creditsPage = document.getElementById('creditsPage');
@@ -23,6 +41,9 @@ var endMenu = document.getElementById('end-menu');
 var restart = document.getElementById('restart');
 var victroryMenu = document.getElementById('victory-menu');
 var nextLevel = document.getElementById('nextLevel');
+var escapeMenu = document.getElementById('escape-menu');
+var pauseTitle = document.getElementById('pauseTitle');
+var vitoryTitle = document.getElementById('vitoryTitle');
 const playerImage = document.getElementById("player");
 const pooImage = document.getElementById("poo");
 const enemyImage = document.getElementById("enemy");
@@ -148,10 +169,18 @@ function detectCollision() {
         (player.playerYCoordinate <= 55 && !immortal) ||
         (player.playerYCoordinate + player.playerHeight >= canvas.height - 18 && !immortal)) {
         if (hearts.length === 1) {
+            deadSound.pause();
+            deadSound.currentTime = 0;
+            deadSound.volume = Number(localStorage.getItem("SoundVol"));
+            deadSound.play();
             hearts.pop();
             endGame();
         }
         else {
+            deadSound.pause();
+            deadSound.currentTime = 0;
+            deadSound.volume = Number(localStorage.getItem("SoundVol"));
+            deadSound.play();
             hearts.pop();
             player.playerXCoordinate = canvas.width / 2;
             player.playerYCoordinate = canvas.height / 2;
@@ -172,11 +201,11 @@ function pauseGame(e) {
     }
     else if (gamePaused === false && e.key === mm) {
         gamePaused = true;
-        startMenu.style.display = "flex";
+        escapeMenu.style.display = "flex";
     }
     else if (gamePaused === true && e.key === mm) {
         gamePaused = false;
-        startMenu.style.display = "none";
+        escapeMenu.style.display = "none";
         gameUpdate();
     }
 }
@@ -205,27 +234,103 @@ function movePlayer() {
 
     }
 }
+function handleMovement(e) {
+    if (e.touches) {
+        player.playerXCoordinate = e.touches[0].pageX - canvas.offsetLeft - player.playerWidth / 2;
+        player.playerYCoordinate = e.touches[0].pageY - canvas.offsetTop - player.playerHeight / 2;
+        e.preventDefault();
+    }
+}
+function showCountdown() {
+    countDownHasStarted = true;
+    let milestoneOne = 25;
+    let milestoneTwo = 50;
+    let milestoneThree = 75;
+    let milestoneFour = 100;
+    let milestoneFive = 115;
+    let currentT = 25;
+    countdownOne.style.display = "block";
+    countdownTwo.style.display = "block";
+    countdownThree.style.display = "block";
+    countdownGo.style.display = "block";
+    var x = setInterval(function () {
+        if (currentT == milestoneOne) {
+            countdownSound.pause();
+            countdownSound.currentTime = 0;
+            countdownSound.volume = Number(localStorage.getItem("SoundVol"));
+            countdownSound.play();
+            countdownThree.style.opacity = "1";
+            currentT += 25;
+        }
+        else if (currentT == milestoneTwo) {
+            countdownThree.style.opacity = "0";
+            countdownTwo.style.opacity = "1";
+            currentT += 25;
+        }
+        else if (currentT == milestoneThree) {
+            countdownTwo.style.opacity = "0";
+            countdownOne.style.opacity = "1";
+            currentT += 25;
+        }
+        else if (currentT == milestoneFour) {
+            countdownOne.style.opacity = "0";
+            countdownGo.style.opacity = "1";
+            currentT += 25;
+        }
+        else if (currentT > milestoneFive) {
+            clearInterval(x);
+            countDownHasStarted = false;
+            countdownGo.style.opacity = "0";
+            countdownOne.style.display = "none";
+            countdownTwo.style.display = "none";
+            countdownThree.style.display = "none";
+            countdownGo.style.display = "none";
+            gameUpdate();
+        }
+    }, 800);
+}
 function startGame() {
+    backgroundMusic.pause();
+    gameOverSound.pause();
+    childrenSound.pause();
     startMenu.style.display = "none";
+    if (window.innerWidth < 450) {
+        if (document.querySelector("body").requestFullscreen) {
+            document.querySelector("body").requestFullscreen().then(res => console.log(res)).catch(err => console.log(err));
+        }
+        screen.orientation.lock('landscape');
+    }
     gameRunning = true;
     gameOver = false;
     victory = false;
+    toolbar.style.visibility = "visible";
     for (let i = 0; i < player.maxLives; i++) {
-        hearts.push(new Heart(heartImage, 255 + [i] * 25, 15, 25, 25))[i];
+        if (localStorage.getItem("lang") === "german") {
+            hearts.push(new Heart(heartImage, 320 + [i] * 25, 15, 25, 25))[i];
+        }
+        else if (localStorage.getItem("lang") === "serbian") {
+            hearts.push(new Heart(heartImage, 290 + [i] * 25, 15, 25, 25))[i];
+        }
+        else if (localStorage.getItem("lang") === "english" || localStorage.getItem("lang") === undefined) {
+            hearts.push(new Heart(heartImage, 255 + [i] * 25, 15, 25, 25))[i];
+        }
     }
     player.playerXCoordinate = (Math.random() * (canvas.width - 2 * player.playerWidth)) + player.playerWidth;
     player.playerYCoordinate = (Math.random() * (canvas.height - 2 * player.playerHeight)) + player.playerHeight;
     for (let i = 0; i < pooMax; i++) {
-        poos.push(new Poo(pooImage, (Math.random() * (canvas.width - 100)) + 50, (Math.random() * (canvas.height - 100)) + 50, 50, 50, Math.random() * 3, Math.random() * 3))[i];
+        poos.push(new Poo(pooImage, (Math.random() * (canvas.width - 140)) + 70, (Math.random() * (canvas.height - 175)) + 105, 50, 50, 2, 2))[i];
     }
     for (let i = 0; i < enemyMax; i++) {
-        enemies.push(new Enemy(enemyImage, (Math.random() * (canvas.width - 100)) + 50, (Math.random() * (canvas.height - 100)) + 50, 50, 50, Math.random() * 3, Math.random() * 3))[i];
+        enemies.push(new Enemy(enemyImage, (Math.random() * (canvas.width - 140)) + 70, (Math.random() * (canvas.height - 175)) + 105, 50, 50, 2, 2))[i];
     }
     document.addEventListener("keydown", keyPressed, true);
     document.addEventListener("keyup", keyReleased, true);
-    gameUpdate();
+    canvas.addEventListener("touchstart", handleMovement);
+    canvas.addEventListener("touchmove", handleMovement);
+    showCountdown();
 }
 function showStartMenu() {
+    screen.orientation.unlock();
     startMenu.style.display = "flex";
     function disableStartKeyAndStartGame() {
         if (!gameRunning && !gameOver && !victory) {
@@ -278,8 +383,17 @@ function showStartMenu() {
         location.reload();
     }
     logOut.addEventListener("click", logOutUser);
+    backgroundMusic.pause();
+    backgroundMusic.currentTime = 0;
+    backgroundMusic.volume = Number(localStorage.getItem("MusVol"));
+    backgroundMusic.play();
 }
 function endGame() {
+    deadSound.pause();
+    gameOverSound.pause();
+    gameOverSound.currentTime = 0;
+    gameOverSound.volume = Number(localStorage.getItem("SoundVol"));
+    gameOverSound.play();
     clearBoard();
     document.removeEventListener("keydown", keyPressed);
     document.removeEventListener("keyup", keyReleased);
@@ -308,6 +422,10 @@ function endGame() {
     document.addEventListener("keydown", restartKeyPressed);
 }
 function victroryScreen() {
+    childrenSound.pause();
+    childrenSound.currentTime = 0;
+    childrenSound.volume = Number(localStorage.getItem("SoundVol"));
+    childrenSound.play();
     clearBoard();
     victory = true;
     gameRunning = false;
@@ -328,8 +446,8 @@ function victroryScreen() {
     nextLevel.addEventListener("click", repeatLevel)
 }
 function gameUpdate() {
-    drawCanvas();
     clearBoard();
+    drawCanvas();
     movePlayer();
     drawPlayer();
     drawCanvasBorder();
@@ -344,6 +462,10 @@ function gameUpdate() {
             player.playerYCoordinate <= poo.pooYCoordinate + poo.pooHeight &&
             player.playerYCoordinate + player.playerHeight >= poo.pooYCoordinate) {
             poos.splice(index, 1);
+            pooEatenSound.pause();
+            pooEatenSound.currentTime = 0;
+            pooEatenSound.volume = Number(localStorage.getItem("SoundVol"));
+            pooEatenSound.play();
             points += 100;
             score.innerText = points;
             if (poos.length === 0) {
@@ -359,10 +481,16 @@ function gameUpdate() {
             player.playerYCoordinate + player.playerHeight >= enemy.enemyYCoordinate &&
             !immortal) {
             if (hearts.length === 1) {
+                deadSound.pause();
+                deadSound.currentTime = 0;
+                deadSound.play();
                 hearts.pop()
                 endGame();
             }
             else {
+                deadSound.pause();
+                deadSound.currentTime = 0;
+                deadSound.play();
                 hearts.pop()
                 player.playerXCoordinate = canvas.width / 2
                 player.playerYCoordinate = canvas.height / 2
@@ -375,17 +503,24 @@ function gameUpdate() {
                 poo.pooXCoordinate + poo.pooWidth >= enemy.enemyXCoordinate &&
                 poo.pooYCoordinate <= enemy.enemyYCoordinate + enemy.enemyHeight &&
                 poo.pooYCoordinate + poo.pooHeight >= enemy.enemyYCoordinate) {
-                enemy.enemyYValocity *= -1;
-                poo.pooYValocity *= -1;
-                enemy.enemyXValocity *= -1;
-                poo.pooXValocity *= -1;
+                let vCollision = { x: `${poo.pooXCoordinate - enemy.enemyXCoordinate}`, y: `${poo.pooYCoordinate - enemy.enemyYCoordinate}` };
+                let distance = Math.sqrt((`${poo.pooXCoordinate - enemy.enemyXCoordinate}`) * (`${poo.pooXCoordinate - enemy.enemyXCoordinate}`) + (`${poo.pooYCoordinate - enemy.enemyYCoordinate}`) * (`${poo.pooYCoordinate - enemy.enemyYCoordinate}`));
+                let vCollisionNorm = { x: vCollision.x / distance, y: vCollision.y / distance };
+                let vRelativeVelocity = { x: `${enemy.enemyXValocity - poo.pooXValocity}`, y: `${enemy.enemyYValocity - poo.pooYValocity}` };
+                let speed = vRelativeVelocity.x * vCollisionNorm.x + vRelativeVelocity.y * vCollisionNorm.y;
+                if (!(speed < 0)) {
+                    enemy.enemyXValocity -= speed * vCollisionNorm.x;
+                    enemy.enemyYValocity -= speed * vCollisionNorm.y;
+                    poo.pooXValocity += speed * vCollisionNorm.x;
+                    poo.pooYValocity += speed * vCollisionNorm.y;
+                }
             }
         });
     });
     if (gameRunning && !gameOver && !victory) {
         checkIfUserHasPausedTheGame();
     }
-    if (gameRunning && !gamePaused && !gameOver && !victory) {
+    if (gameRunning && !gamePaused && !gameOver && !victory && !countDownHasStarted) {
         requestAnimationFrame(gameUpdate);
     }
 }

@@ -8,7 +8,7 @@ html, body {
     height: 100%;
     overflow: hidden;
 }
-#start-menu, #end-menu, #rulesPage, #victory-menu, #settingPage, #controlsPage, #logInPage, #pause-menu, #creditsPage{
+#start-menu, #escape-menu, #end-menu, #rulesPage, #victory-menu, #settingPage, #controlsPage, #logInPage, #pause-menu, #creditsPage, #escape-menu, #languagePage, #audioPage{
     display: none;
     flex-direction: column;
     text-align: center;
@@ -42,14 +42,21 @@ button {
     border: none;
     border-radius: 0.3rem;
 }
-button#start:hover, button#setting:hover, button#restart:hover, button#gameRules:hover, button#credits:hover, button#rulesPageBack:hover, button#nextLevel:hover, button#controls:hover, button#language:hover, button#audio:hover, button#settingPageBack:hover, button#controlsPageBack:hover, button#controlsPageConfirm:hover, button#logIn:hover, button#logOut:hover, button#creditsPageBack:hover{
+button#start:hover, button#setting:hover, button#restart:hover, button#gameRules:hover, button#credits:hover, button#rulesPageBack:hover, button#nextLevel:hover, button#controls:hover, button#language:hover, button#audio:hover, button#settingPageBack:hover, button#controlsPageBack:hover, button#controlsPageConfirm:hover, button#languagePageConfirm:hover, button#logIn:hover, button#logOut:hover, button#creditsPageBack:hover, button#languagePageBack:hover, button#audioPageConfirm:hover, button#audioPageBack:hover, button#continue:hover{
     background-color: #130c52;
     transition: background-color ease-in 0.5s;
 }
-#start, #rulesPageBack, #nextLevel, #restart, #settingPageBack, #controlsPageBack, #controlsPageConfirm, #logIn, #creditsPageBack{
+#start, #rulesPageBack, #nextLevel, #restart, #settingPageBack, #controlsPageBack, #controlsPageConfirm, #logIn, #creditsPageBack, #languagePageConfirm, #languagePageBack, #audioPageConfirm, #audioPageBack, #continue{
     font-size: 1.1rem;
     font-family: 'Fredoka One', cursive;
     background-color: #3221cf;
+}
+#placeForCredits{
+    max-height: 17rem;
+    font-size: 0.9rem;
+    font-family: 'Fredoka One', cursive;
+    padding: 0.5rem;
+    overflow: hidden;
 }
 input{
     font-size: 1rem;
@@ -85,11 +92,12 @@ label{
     opacity: 0;
     transition: all ease-in-out 0.7s;
 }
-#controlsPageConfirm{
+#controlsPageConfirm, #languagePageConfirm, #audioPageConfirm{
     visibility: hidden;
-    transition: visibility ease-out 1.5s;
+    opacity: 0;
+    transition: opacity ease-in 0.9s;
 }
-#setting, #gameRules, #credits, #controls, #language, #audio, #logOut{
+#setting, #gameRules, #credits, #controls, #language, #audio, #logOut, #continue, #exitMainMenu{
     font-size: 1.1rem;
     font-family: 'Fredoka One', cursive;
     background-color: #442fffad;
@@ -104,6 +112,29 @@ span#moveUp, span#moveDown, span#moveLeft, span#moveRight, span#run, span#pause,
     width: 19rem;
     height: 17rem;
     margin: 0.5rem;
+}
+.languageOption, #musicOptions, #soundEffectOptions{
+    margin: 0.5rem;
+}
+.languageOption label  {
+    font-size: 1.5rem;
+    font-family: 'Fredoka One', cursive;
+    background-color: #f0f0f0;
+    color:  #000000;
+    transition: all 1ms ease-in;
+}
+.languageOption input[type=radio]{
+    display: none;
+}
+.languageOption input:checked + .languageOption label{
+    background-color: #442fffad;
+    color: #ffffff;
+}
+#musicVolumeController, #soundEffectVolumeController{
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    outline: none;
 }
 h1{
     font-size: 2.3rem;
@@ -160,6 +191,7 @@ display: none;
 background-color: transparent;
 }
 #toolbar{
+    visibility: hidden;
     position: fixed;
     top: 0;
     left: 0;
@@ -168,4 +200,26 @@ background-color: transparent;
     color:  #000000;
     font-family: 'Fredoka One', cursive;
     padding: 1rem;
+}
+#nrOne, #nrTwo, #nrThree{
+    display: none;
+    opacity: 0;
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translateX(-50%) translateY(-50%);
+    width: 5rem;
+    height: 5rem;
+    transition: opacity ease-in 35ms;
+}
+#go{
+    display: none;
+    opacity: 0;
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translateX(-50%) translateY(-50%);
+    width: 12rem;
+    height: 5rem;
+    transition: opacity ease-in 35ms;
 }
