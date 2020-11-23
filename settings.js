@@ -270,9 +270,8 @@ var alreadyListeningStart = false;
 var alreadyListeningPause = false;
 var alreadyListeningMenu = false;
 function translateGame() {
-    if (localStorage.getItem("lang") === "undefined") {
+    if (!(localStorage.getItem("lang") === "undefined") && !(localStorage.getItem("lang") === "null")) {
         let prefLang = localStorage.getItem("lang");
-        console.log(prefLang);
         start.textContent = languageArray[prefLang].start;
         continueGame.textContent = languageArray[prefLang].continueGame;
         exitMainMenu.textContent = languageArray[prefLang].exitMainMenu;
