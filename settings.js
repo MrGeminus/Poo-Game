@@ -157,7 +157,9 @@ var languageArray = {
         "restart": "Try again?",
         "pauseTitle": "Game Paused!",
         "vitoryTitle": "Congratulation, you are full of shit!",
-        "nextLevel": "Replay"
+        "nextLevel": "Replay",
+        "escapeGameRules": "Game Rules",
+        "escapeSetting": "Settings"
     },
     "serbian":
     {
@@ -204,7 +206,9 @@ var languageArray = {
         "restart": "Покушај поново?",
         "pauseTitle": "Игра је паузирана!",
         "vitoryTitle": "Честитамо, пун си гована!",
-        "nextLevel": "Играј поново"
+        "nextLevel": "Играј поново",
+        "escapeGameRules": "Правила Игре",
+        "escapeSetting": "Подешавања"
     },
     "german":
     {
@@ -251,7 +255,9 @@ var languageArray = {
         "restart": "Versuch es noch einmal?",
         "pauseTitle": "Spiel pausiert!",
         "vitoryTitle": "Glückwunsch, du bist voller Scheiße!",
-        "nextLevel": "Replay"
+        "nextLevel": "Replay",
+        "escapeGameRules": "Spielregeln",
+        "escapeSetting": "Einstellungen"
     }
 }
 var controlsPage = document.getElementById('controlsPage');
@@ -310,6 +316,8 @@ function translateGame() {
         labelFormUserPassword.textContent = languageArray[prefLang].labelFormUserPassword;
         invalidTxtPass.textContent = languageArray[prefLang].invalidTxtPass;
         interductionText.textContent = languageArray[prefLang].interductionText;
+        escapeGameRules.textContent = languageArray[prefLang].escapeGameRules;
+        escapeSetting.textContent = languageArray[prefLang].escapeSetting;
     }
     else {
         let defaultLang = "english"
@@ -357,6 +365,8 @@ function translateGame() {
         labelFormUserPassword.textContent = languageArray[defaultLang].labelFormUserPassword;
         invalidTxtPass.textContent = languageArray[defaultLang].invalidTxtPass;
         interductionText.textContent = languageArray[defaultLang].interductionText;
+        escapeGameRules.textContent = languageArray[defaultLang].escapeGameRules;
+        escapeSetting.textContent = languageArray[defaultLang].escapeSetting;
     }
 }
 function changeControls() {

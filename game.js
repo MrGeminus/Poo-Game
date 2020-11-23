@@ -202,6 +202,29 @@ function pauseGame(e) {
     else if (gamePaused === false && e.key === mm) {
         gamePaused = true;
         escapeMenu.style.display = "flex";
+        function continuePlaying() {
+            continueGame.removeEventListener("click", continuePlaying);
+            exitMainMenu.removeEventListener("click", exitToMainMenu);
+            gamePaused = false;
+            escapeMenu.style.display = "none";
+            gameUpdate();
+        }
+        continueGame.addEventListener("click", continuePlaying);
+        function exitToMainMenu() {
+            continueGame.removeEventListener("click", continuePlaying);
+            exitMainMenu.removeEventListener("click", exitToMainMenu);
+            gamePaused = false;
+            gameRunning = false;
+            document.removeEventListener("keydown", keyPressed);
+            document.removeEventListener("keyup", keyReleased);
+            enemies.length = 0;
+            poos.length = 0;
+            clearBoard();
+            toolbar.style.visibility = "hidden";
+            escapeMenu.style.display = "none";
+            showStartMenu();
+        }
+        exitMainMenu.addEventListener("click", exitToMainMenu);
     }
     else if (gamePaused === true && e.key === mm) {
         gamePaused = false;
@@ -295,8 +318,17 @@ function startGame() {
     childrenSound.pause();
     startMenu.style.display = "none";
     if (window.innerWidth < 450) {
-        if (document.querySelector("body").requestFullscreen) {
-            document.querySelector("body").requestFullscreen().then(res => console.log(res)).catch(err => console.log(err));
+        if (document.documentElement.requestFullscreen) {
+            document.documentElement.requestFullscreen();
+        }
+        else if (document.documentElement.mozRequestFullscreen) {
+            document.documentElement.mozRequestFullscreen();
+        }
+        else if (document.documentElement.webkitRequestFullscreen) {
+            document.documentElement.webkitRequestFullscreen();
+        }
+        else {
+            document.documentElement.msRequestFullscreen();
         }
         screen.orientation.lock('landscape');
     }
@@ -330,7 +362,21 @@ function startGame() {
     showCountdown();
 }
 function showStartMenu() {
-    screen.orientation.unlock();
+    if (window.innerWidth < 450) {
+        screen.orientation.unlock();
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        }
+        else if (document.mozCancelFullscreen) {
+            document.mozCancelFullscreen();
+        }
+        else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+        }
+        else {
+            document.msExitFullscreen();
+        }
+    }
     startMenu.style.display = "flex";
     function disableStartKeyAndStartGame() {
         if (!gameRunning && !gameOver && !victory) {

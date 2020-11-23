@@ -42,7 +42,7 @@ button {
     border: none;
     border-radius: 0.3rem;
 }
-button#start:hover, button#setting:hover, button#restart:hover, button#gameRules:hover, button#credits:hover, button#rulesPageBack:hover, button#nextLevel:hover, button#controls:hover, button#language:hover, button#audio:hover, button#settingPageBack:hover, button#controlsPageBack:hover, button#controlsPageConfirm:hover, button#languagePageConfirm:hover, button#logIn:hover, button#logOut:hover, button#creditsPageBack:hover, button#languagePageBack:hover, button#audioPageConfirm:hover, button#audioPageBack:hover, button#continue:hover{
+button#start:hover, button#setting:hover, button#restart:hover, button#gameRules:hover, button#credits:hover, button#rulesPageBack:hover, button#nextLevel:hover, button#controls:hover, button#language:hover, button#audio:hover, button#settingPageBack:hover, button#controlsPageBack:hover, button#controlsPageConfirm:hover, button#languagePageConfirm:hover, button#logIn:hover, button#logOut:hover, button#creditsPageBack:hover, button#languagePageBack:hover, button#audioPageConfirm:hover, button#audioPageBack:hover, button#continue:hover, button#exitMainMenu:hover, button#escapeGameRules:hover, button#escapeSetting:hover {
     background-color: #130c52;
     transition: background-color ease-in 0.5s;
 }
@@ -97,7 +97,7 @@ label{
     opacity: 0;
     transition: opacity ease-in 0.9s;
 }
-#setting, #gameRules, #credits, #controls, #language, #audio, #logOut, #continue, #exitMainMenu{
+#setting, #gameRules, #credits, #controls, #language, #audio, #logOut, #exitMainMenu, #escapeGameRules, #escapeSetting{
     font-size: 1.1rem;
     font-family: 'Fredoka One', cursive;
     background-color: #442fffad;
