@@ -426,6 +426,7 @@ function showStartMenu() {
         document.removeEventListener("keydown", startKeyPressed);
         localStorage.removeItem("storedID");
         localStorage.removeItem("storedLogInInfo");
+        localStorage.clear();
         location.reload();
     }
     logOut.addEventListener("click", logOutUser);
