@@ -343,7 +343,7 @@ function startGame() {
         else if (localStorage.getItem("lang") === "serbian") {
             hearts.push(new Heart(heartImage, 290 + [i] * 25, 15, 25, 25))[i];
         }
-        else if (localStorage.getItem("lang") === "english" || localStorage.getItem("lang") === undefined) {
+        else if (localStorage.getItem("lang") === "english" || localStorage.getItem("lang") == null || localStorage.getItem("lang") == undefined) {
             hearts.push(new Heart(heartImage, 255 + [i] * 25, 15, 25, 25))[i];
         }
     }
