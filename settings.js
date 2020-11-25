@@ -1,4 +1,4 @@
-import { startMenu, continueGame, creditsPageBack, pauseTitle, vitoryTitle, exitMainMenu, rulesTitle, ruleOne, ruleTwo, ruleThree, pooEatenSound, childrenSound, countdownSound, deadSound, gameOverSound, backgroundMusic, hearts } from "./game.js";
+import { start, startMenu, continueGame, creditsPageBack, pauseTitle, vitoryTitle, exitMainMenu, rulesTitle, ruleOne, ruleTwo, ruleThree, pooEatenSound, childrenSound, countdownSound, deadSound, gameOverSound, backgroundMusic, hearts } from "./game.js";
 export { openSetting, mu, md, ml, mr, r, p, mm };
 export { openControls, translateGame };
 var moveUpControl = document.getElementById('moveUpControl');
@@ -17,6 +17,8 @@ var pauseGameControlSpan = document.getElementById('pauseGameControlSpan');
 var mainMenuControlSpan = document.getElementById('mainMenuControlSpan');
 var musicVolumeController = document.getElementById("musicVolumeController");
 var soundEffectVolumeController = document.getElementById("soundEffectVolumeController");
+var musicVolumeLabel = document.getElementById("musicVolumeLabel");
+var soundVolumeLabel = document.getElementById("soundVolumeLabel");
 var srbLabel = document.querySelector('.srb');
 var deLabel = document.querySelector('.de');
 var enLabel = document.querySelector('.en');
@@ -159,7 +161,9 @@ var languageArray = {
         "vitoryTitle": "Congratulation, you are full of shit!",
         "nextLevel": "Replay",
         "escapeGameRules": "Game Rules",
-        "escapeSetting": "Settings"
+        "escapeSetting": "Settings",
+        "musicVolumeLabel": "Music Volume",
+        "soundVolumeLabel": "Sound Effects Volume"
     },
     "serbian":
     {
@@ -208,7 +212,9 @@ var languageArray = {
         "vitoryTitle": "Честитамо, пун си гована!",
         "nextLevel": "Играј поново",
         "escapeGameRules": "Правила Игре",
-        "escapeSetting": "Подешавања"
+        "escapeSetting": "Подешавања",
+        "musicVolumeLabel": "Јачина музике",
+        "soundVolumeLabel": "Јачина звучних ефеката"
     },
     "german":
     {
@@ -257,7 +263,9 @@ var languageArray = {
         "vitoryTitle": "Glückwunsch, du bist voller Scheiße!",
         "nextLevel": "Replay",
         "escapeGameRules": "Spielregeln",
-        "escapeSetting": "Einstellungen"
+        "escapeSetting": "Einstellungen",
+        "musicVolumeLabel": "Musiklautstärke",
+        "soundVolumeLabel": "Lautstärke der Soundeffekte"
     }
 }
 var controlsPage = document.getElementById('controlsPage');
@@ -270,7 +278,7 @@ var alreadyListeningStart = false;
 var alreadyListeningPause = false;
 var alreadyListeningMenu = false;
 function translateGame() {
-    if (!(localStorage.getItem("lang") === undefined)) {
+    if (localStorage.getItem("lang") === "serbian" || localStorage.getItem("lang") === "german" || localStorage.getItem("lang") === "english") {
         let prefLang = localStorage.getItem("lang");
         start.textContent = languageArray[prefLang].start;
         continueGame.textContent = languageArray[prefLang].continueGame;
@@ -318,6 +326,8 @@ function translateGame() {
         interductionText.textContent = languageArray[prefLang].interductionText;
         escapeGameRules.textContent = languageArray[prefLang].escapeGameRules;
         escapeSetting.textContent = languageArray[prefLang].escapeSetting;
+        musicVolumeLabel.textContent = languageArray[prefLang].musicVolumeLabel;
+        soundVolumeLabel.textContent = languageArray[prefLang].soundVolumeLabel;
     }
     else {
         let defaultLang = "english"
@@ -367,6 +377,8 @@ function translateGame() {
         interductionText.textContent = languageArray[defaultLang].interductionText;
         escapeGameRules.textContent = languageArray[defaultLang].escapeGameRules;
         escapeSetting.textContent = languageArray[defaultLang].escapeSetting;
+        musicVolumeLabel.textContent = languageArray[defaultLang].musicVolumeLabel;
+        soundVolumeLabel.textContent = languageArray[defaultLang].soundVolumeLabel;
     }
 }
 function changeControls() {

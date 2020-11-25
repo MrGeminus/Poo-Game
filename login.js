@@ -1,6 +1,6 @@
 import { users } from "./user.js";
 import { openSetting, translateGame } from "./settings.js";
-import { showStartMenu } from "./game.js";
+import { backgroundMusic, showStartMenu } from "./game.js";
 var InputedUserName = "";
 var InputedUserPasword = "";
 var invalidTxtUser = document.getElementById("invalidTxtUser");
@@ -64,6 +64,15 @@ function checkifUserIsAlreadyLoggedIn() {
     else {
         logInPage.style.display = "flex";
         translateGame();
+        if (localStorage.getItem("MusVol") == undefined && localStorage.getItem("SoundVol") == undefined) {
+            musicVolumeController.value = 50;
+            soundEffectVolumeController.value = 50;
+            localStorage.setItem("MusVol", `${50 / 100}`);
+            localStorage.setItem("SoundVol", `${50 / 100}`);
+        }
+        if (window.innerWidth < 450) {
+            localStorage.setItem("mobileDevice", "true")
+        }
         logIn.addEventListener("click", verifyLoginCredentials);
         document.addEventListener("keydown", checkIfPressedKeyIsEnter);
     }

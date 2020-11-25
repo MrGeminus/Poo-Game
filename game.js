@@ -1,6 +1,6 @@
 import { users } from "./user.js";
 import { openSetting, mu, md, ml, mr, r, p, mm } from "./settings.js";
-export { showStartMenu, startMenu, continueGame, creditsPageBack, pauseTitle, vitoryTitle, exitMainMenu, rulesTitle, ruleOne, ruleTwo, ruleThree, pooEatenSound, childrenSound, countdownSound, deadSound, gameOverSound, backgroundMusic, hearts };
+export { start, showStartMenu, startMenu, continueGame, creditsPageBack, pauseTitle, vitoryTitle, exitMainMenu, rulesTitle, ruleOne, ruleTwo, ruleThree, pooEatenSound, childrenSound, countdownSound, deadSound, gameOverSound, backgroundMusic, hearts };
 var canvas = document.getElementById("game");
 var ctx = canvas.getContext('2d');
 var gameRunning = false;
@@ -9,6 +9,10 @@ var gameOver = false;
 var victory = false;
 var countDownHasStarted = false;
 var keysArray = [];
+var moveAngle;
+var moveXVelocity;
+var moveYVelocity;
+var screenTouched = false;
 const countdownOne = document.getElementById("nrOne");
 const countdownTwo = document.getElementById("nrTwo");
 const countdownThree = document.getElementById("nrThree");
@@ -215,10 +219,13 @@ function pauseGame(e) {
             exitMainMenu.removeEventListener("click", exitToMainMenu);
             gamePaused = false;
             gameRunning = false;
+            screenTouched = false;
             document.removeEventListener("keydown", keyPressed);
             document.removeEventListener("keyup", keyReleased);
             enemies.length = 0;
             poos.length = 0;
+            points = 0;
+            score.innerText = points;
             clearBoard();
             toolbar.style.visibility = "hidden";
             escapeMenu.style.display = "none";
@@ -256,13 +263,17 @@ function movePlayer() {
         player.playerXCoordinate += player.xValocity;
 
     }
+    if ((localStorage.getItem("mobileDevice") === "true") && screenTouched) {
+        player.playerXCoordinate += moveXVelocity;
+        player.playerYCoordinate += moveYVelocity;
+    }
 }
 function handleMovement(e) {
-    if (e.touches) {
-        player.playerXCoordinate = e.touches[0].pageX - canvas.offsetLeft - player.playerWidth / 2;
-        player.playerYCoordinate = e.touches[0].pageY - canvas.offsetTop - player.playerHeight / 2;
-        e.preventDefault();
-    }
+    screenTouched = true;
+    moveAngle = Math.atan2(e.touches.screenY - player.playerYCoordinate, e.touches.screenX - player.playerXCoordinate);
+    moveXVelocity = Math.cos(moveAngle);
+    moveYVelocity = Math.cos(moveAngle);
+    e.preventDefault();
 }
 function showCountdown() {
     countDownHasStarted = true;
@@ -317,7 +328,7 @@ function startGame() {
     gameOverSound.pause();
     childrenSound.pause();
     startMenu.style.display = "none";
-    if (window.innerWidth < 450) {
+    if ((localStorage.getItem("mobileDevice") === "true")) {
         if (document.documentElement.requestFullscreen) {
             document.documentElement.requestFullscreen();
         }
@@ -343,7 +354,7 @@ function startGame() {
         else if (localStorage.getItem("lang") === "serbian") {
             hearts.push(new Heart(heartImage, 290 + [i] * 25, 15, 25, 25))[i];
         }
-        else if (localStorage.getItem("lang") === "english" || localStorage.getItem("lang") === undefined) {
+        else if (localStorage.getItem("lang") === "english" || localStorage.getItem("lang") == undefined || localStorage.getItem("lang") == null) {
             hearts.push(new Heart(heartImage, 255 + [i] * 25, 15, 25, 25))[i];
         }
     }
@@ -358,11 +369,10 @@ function startGame() {
     document.addEventListener("keydown", keyPressed, true);
     document.addEventListener("keyup", keyReleased, true);
     canvas.addEventListener("touchstart", handleMovement);
-    canvas.addEventListener("touchmove", handleMovement);
     showCountdown();
 }
 function showStartMenu() {
-    if (window.innerWidth < 450) {
+    if ((localStorage.getItem("mobileDevice") === "true")) {
         screen.orientation.unlock();
         if (document.exitFullscreen) {
             document.exitFullscreen();
@@ -408,6 +418,7 @@ function showStartMenu() {
     gameRules.addEventListener("click", rulesButtonPressed);
     function disableStartKeyPressed() {
         document.removeEventListener("keydown", startKeyPressed);
+        backgroundMusic.pause();
         openSetting();
     }
     setting.addEventListener("click", disableStartKeyPressed);
@@ -443,6 +454,7 @@ function endGame() {
     clearBoard();
     document.removeEventListener("keydown", keyPressed);
     document.removeEventListener("keyup", keyReleased);
+    screenTouched = false;
     gameRunning = false;
     gameOver = true;
     enemies.length = 0;
@@ -475,6 +487,7 @@ function victroryScreen() {
     clearBoard();
     victory = true;
     gameRunning = false;
+    screenTouched = false;
     document.removeEventListener("keydown", keyPressed);
     document.removeEventListener("keyup", keyReleased);
     enemies.length = 0;
