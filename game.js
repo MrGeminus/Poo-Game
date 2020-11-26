@@ -270,8 +270,8 @@ function movePlayer() {
 
     }
     if ((localStorage.getItem("mobileDevice") === "true") && screenTouched) {
-        player.playerXCoordinate += moveXVelocity * 5;
-        player.playerYCoordinate += moveYVelocity * 5;
+        player.playerXCoordinate += moveXVelocity;
+        player.playerYCoordinate += moveYVelocity;
     }
 }
 function handleMovement(e) {
@@ -279,8 +279,8 @@ function handleMovement(e) {
     if (e.touches.length == 1) {
         screenTouched = true;
         moveAngle = Math.atan2(e.touches[0].pageY - player.playerYCoordinate, e.touches[0].pageX - player.playerXCoordinate);
-        moveXVelocity = Math.cos(moveAngle);
-        moveYVelocity = Math.sin(moveAngle);
+        moveXVelocity = Math.cos(moveAngle) * 6;
+        moveYVelocity = Math.sin(moveAngle) * 6;
         console.log(moveAngle);
     }
 
