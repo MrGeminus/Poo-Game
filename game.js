@@ -270,8 +270,8 @@ function movePlayer() {
 
     }
     if ((localStorage.getItem("mobileDevice") === "true") && screenTouched) {
-        player.playerXCoordinate += moveXVelocity * 2;
-        player.playerYCoordinate += moveYVelocity * 2;
+        player.playerXCoordinate += moveXVelocity * 5;
+        player.playerYCoordinate += moveYVelocity * 5;
     }
 }
 function handleMovement(e) {
