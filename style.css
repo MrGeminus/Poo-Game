@@ -42,7 +42,7 @@ button {
     border: none;
     border-radius: 0.3rem;
 }
-button#start:hover, button#setting:hover, button#restart:hover, button#gameRules:hover, button#credits:hover, button#rulesPageBack:hover, button#nextLevel:hover, button#controls:hover, button#language:hover, button#audio:hover, button#settingPageBack:hover, button#controlsPageBack:hover, button#controlsPageConfirm:hover, button#languagePageConfirm:hover, button#logIn:hover, button#logOut:hover, button#creditsPageBack:hover, button#languagePageBack:hover, button#audioPageConfirm:hover, button#audioPageBack:hover, button#continue:hover, button#exitMainMenu:hover, button#escapeGameRules:hover, button#escapeSetting:hover {
+button#start:hover, button#setting:hover, button#restart:hover, button#gameRules:hover, button#credits:hover, button#rulesPageBack:hover, button#nextLevel:hover, button#controls:hover, button#language:hover, button#audio:hover, button#settingPageBack:hover, button#controlsPageBack:hover, button#controlsPageConfirm:hover, button#languagePageConfirm:hover, button#logIn:hover, button#logOut:hover, button#creditsPageBack:hover, button#languagePageBack:hover, button#audioPageConfirm:hover, button#audioPageBack:hover, button#continue:hover, button#exitMainMenu:hover, button#escapeGameRules:hover, button#escapeSetting:hover, button#leaveGameGameOver:hover, button#leaveGameVictory:hover {
     background-color: #130c52;
     transition: background-color ease-in 0.5s;
 }
@@ -97,7 +97,7 @@ label{
     opacity: 0;
     transition: opacity ease-in 0.9s;
 }
-#setting, #gameRules, #credits, #controls, #language, #audio, #logOut, #exitMainMenu, #escapeGameRules, #escapeSetting{
+#setting, #gameRules, #credits, #controls, #language, #audio, #logOut, #exitMainMenu, #escapeGameRules, #escapeSetting, #leaveGameGameOver, #leaveGameVictory{
     font-size: 1.1rem;
     font-family: 'Fredoka One', cursive;
     background-color: #442fffad;
@@ -108,10 +108,16 @@ span#moveUp, span#moveDown, span#moveLeft, span#moveRight, span#run, span#pause,
 .active{
     color: #442fffad;
 }
-#gameOverImg{
+#gameOverContainer {
     width: 19rem;
-    height: 17rem;
+    height: 14rem;
     margin: 0.5rem;
+    padding-left: 1.7rem;
+    padding-right: 1.7rem;
+}
+#gameOverImg{
+    width: 100%;
+    height: 100%;
 }
 .languageOption, #musicOptions, #soundEffectOptions{
     margin: 0.5rem;
