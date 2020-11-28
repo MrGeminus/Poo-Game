@@ -8,6 +8,7 @@ var gamePaused = false;
 var gameOver = false;
 var victory = false;
 var countDownHasStarted = false;
+var gameEscape = false;
 var keysArray = [];
 var moveAngle;
 var moveXVelocity;
@@ -17,6 +18,7 @@ const countdownOne = document.getElementById("nrOne");
 const countdownTwo = document.getElementById("nrTwo");
 const countdownThree = document.getElementById("nrThree");
 const countdownGo = document.getElementById("go");
+var userAvatarIcon = document.getElementById("userAvatar");
 var pooEatenSound = document.getElementById("pooEatenSound");
 var childrenSound = document.getElementById("childrenSound");
 var countdownSound = document.getElementById("countdown");
@@ -48,6 +50,8 @@ var nextLevel = document.getElementById('nextLevel');
 var escapeMenu = document.getElementById('escape-menu');
 var pauseTitle = document.getElementById('pauseTitle');
 var vitoryTitle = document.getElementById('vitoryTitle');
+var leaveGameGameOver = document.getElementById('leaveGameGameOver');
+var leaveGameVictory = document.getElementById('leaveGameVictory');
 const playerImage = document.getElementById("player");
 const pooImage = document.getElementById("poo");
 const enemyImage = document.getElementById("enemy");
@@ -201,16 +205,20 @@ function pauseGame(e) {
     else if (gamePaused && e.key === p) {
         gamePaused = false;
         pauseMenu.style.display = "none";
+        document.removeEventListener("keydown", pauseGame);
         gameUpdate();
-        console.log(player.playerXCoordinate, player.playerYCoordinate);
     }
-    else if (gamePaused === false && e.key === mm) {
-        gamePaused = true;
+}
+function escapeGame(e) {
+    if (gameEscape === false && e.key === mm || gameEscape === false && e.touches) {
+        gameEscape = true;
         escapeMenu.style.display = "flex";
         function continuePlaying() {
             continueGame.removeEventListener("click", continuePlaying);
             exitMainMenu.removeEventListener("click", exitToMainMenu);
-            gamePaused = false;
+            document.removeEventListener("keydown", escapeGame);
+            userAvatarIcon.removeEventListener("touchstart", escapeGame);
+            gameEscape = false;
             escapeMenu.style.display = "none";
             gameUpdate();
         }
@@ -218,12 +226,14 @@ function pauseGame(e) {
         function exitToMainMenu() {
             continueGame.removeEventListener("click", continuePlaying);
             exitMainMenu.removeEventListener("click", exitToMainMenu);
-            gamePaused = false;
+            gameEscape = false;
             gameRunning = false;
             screenTouched = false;
             document.removeEventListener("keydown", keyPressed, true);
             document.removeEventListener("keyup", keyReleased, true);
             document.removeEventListener("keydown", pauseGame);
+            document.removeEventListener("keydown", escapeGame);
+            userAvatarIcon.removeEventListener("touchstart", escapeGame);
             enemies.length = 0;
             poos.length = 0;
             keysArray[mu] = false;
@@ -239,11 +249,17 @@ function pauseGame(e) {
         }
         exitMainMenu.addEventListener("click", exitToMainMenu);
     }
-    else if (gamePaused === true && e.key === mm) {
-        gamePaused = false;
+    else if (gameEscape === true && e.key === mm || gameEscape === true && e.touches) {
+        gameEscape = false;
         escapeMenu.style.display = "none";
+        document.removeEventListener("keydown", escapeGame);
+        userAvatarIcon.removeEventListener("touchstart", escapeGame);
         gameUpdate();
     }
+}
+function checkIfUserHasOpenedTheEscapeMenu() {
+    document.addEventListener("keydown", escapeGame);
+    userAvatarIcon.addEventListener("touchstart", escapeGame);
 }
 function checkIfUserHasPausedTheGame() {
     document.addEventListener("keydown", pauseGame);
@@ -281,7 +297,6 @@ function handleMovement(e) {
         moveAngle = Math.atan2(e.touches[0].pageY - player.playerYCoordinate, e.touches[0].pageX - player.playerXCoordinate);
         moveXVelocity = Math.cos(moveAngle) * 6;
         moveYVelocity = Math.sin(moveAngle) * 6;
-        console.log(moveAngle);
     }
 
 }
@@ -338,7 +353,7 @@ function startGame() {
     gameOverSound.pause();
     childrenSound.pause();
     startMenu.style.display = "none";
-    if ((localStorage.getItem("mobileDevice") === "true")) {
+    if (localStorage.getItem("mobileDevice") === "true") {
         if (document.documentElement.requestFullscreen) {
             document.documentElement.requestFullscreen();
         }
@@ -352,10 +367,10 @@ function startGame() {
             document.documentElement.msRequestFullscreen();
         }
         screen.orientation.lock('landscape');
+        player.playerWidth = 30;
+        player.playerHeight = 30;
     }
     gameRunning = true;
-    gameOver = false;
-    victory = false;
     toolbar.style.visibility = "visible";
     for (let i = 0; i < player.maxLives; i++) {
         if (localStorage.getItem("lang") === "german") {
@@ -370,11 +385,23 @@ function startGame() {
     }
     player.playerXCoordinate = (Math.random() * (canvas.width - 2 * player.playerWidth)) + player.playerWidth;
     player.playerYCoordinate = (Math.random() * (canvas.height - 2 * player.playerHeight)) + player.playerHeight;
-    for (let i = 0; i < pooMax; i++) {
-        poos.push(new Poo(pooImage, (Math.random() * (canvas.width - 140)) + 70, (Math.random() * (canvas.height - 175)) + 105, 50, 50, 2, 2))[i];
+    if (localStorage.getItem("mobileDevice") === "true") {
+        for (let i = 0; i < pooMax; i++) {
+            poos.push(new Poo(pooImage, (Math.random() * (canvas.width - 140)) + 70, (Math.random() * (canvas.height - 175)) + 105, 30, 30, 1, 1))[i];
+        }
+
+        for (let i = 0; i < enemyMax; i++) {
+            enemies.push(new Enemy(enemyImage, (Math.random() * (canvas.width - 140)) + 70, (Math.random() * (canvas.height - 175)) + 105, 30, 30, 1, 1))[i];
+        }
     }
-    for (let i = 0; i < enemyMax; i++) {
-        enemies.push(new Enemy(enemyImage, (Math.random() * (canvas.width - 140)) + 70, (Math.random() * (canvas.height - 175)) + 105, 50, 50, 2, 2))[i];
+    else {
+        for (let i = 0; i < pooMax; i++) {
+            poos.push(new Poo(pooImage, (Math.random() * (canvas.width - 140)) + 70, (Math.random() * (canvas.height - 175)) + 105, 50, 50, 1, 1))[i];
+        }
+
+        for (let i = 0; i < enemyMax; i++) {
+            enemies.push(new Enemy(enemyImage, (Math.random() * (canvas.width - 140)) + 70, (Math.random() * (canvas.height - 175)) + 105, 50, 50, 1, 1))[i];
+        }
     }
     document.addEventListener("keydown", keyPressed, true);
     document.addEventListener("keyup", keyReleased, true);
@@ -384,7 +411,7 @@ function startGame() {
     showCountdown();
 }
 function showStartMenu() {
-    if ((localStorage.getItem("mobileDevice") === "true")) {
+    if (localStorage.getItem("mobileDevice") === "true") {
         screen.orientation.unlock();
         if (document.exitFullscreen) {
             document.exitFullscreen();
@@ -433,7 +460,9 @@ function showStartMenu() {
         backgroundMusic.pause();
         openSetting();
     }
-    setting.addEventListener("click", disableStartKeyPressed);
+    if (!(localStorage.getItem("mobileDevice") === "true")) {
+        setting.addEventListener("click", disableStartKeyPressed);
+    }
     function openCredits() {
         document.removeEventListener("keydown", startKeyPressed);
         startMenu.style.display = "none";
@@ -449,7 +478,6 @@ function showStartMenu() {
         document.removeEventListener("keydown", startKeyPressed);
         localStorage.removeItem("storedID");
         localStorage.removeItem("storedLogInInfo");
-        localStorage.clear();
         location.reload();
     }
     logOut.addEventListener("click", logOutUser);
@@ -468,6 +496,7 @@ function endGame() {
     document.removeEventListener("keydown", keyPressed, true);
     document.removeEventListener("keyup", keyReleased, true);
     document.removeEventListener("keydown", pauseGame);
+    document.removeEventListener("keydown", escapeGame);
     canvas.removeEventListener("touchstart", handleMovement, true);
     screenTouched = false;
     gameRunning = false;
@@ -485,6 +514,7 @@ function endGame() {
         endMenu.style.display = "none";
         document.removeEventListener("keydown", restartKeyPressed);
         restart.removeEventListener("click", restartGame);
+        gameOver = false;
         startGame();
     };
     restart.addEventListener("click", restartGame);
@@ -493,17 +523,22 @@ function endGame() {
             endMenu.style.display = "none";
             restart.removeEventListener("click", restartGame);
             document.removeEventListener("keydown", restartKeyPressed);
+            gameOver = false;
             startGame();
         }
     }
     document.addEventListener("keydown", restartKeyPressed);
-}
-function leaveGame() {
-    victory = false;
-    victroryMenu.style.display = "none";
-    nextLevel.removeEventListener("click", repeatLevel)
-    leaveGameButton.removeEventListener("click", repeatLevel)
-    startGame();
+    function exitToMainMenuFromGameOverScreen() {
+        gameOverSound.pause();
+        document.removeEventListener("keydown", restartKeyPressed);
+        restart.addEventListener("click", restartGame);
+        leaveGameGameOver.removeEventListener("click", exitToMainMenuFromGameOverScreen);
+        toolbar.style.visibility = "hidden";
+        endMenu.style.display = "none";
+        gameOver = false;
+        showStartMenu();
+    }
+    leaveGameGameOver.addEventListener("click", exitToMainMenuFromGameOverScreen);
 }
 function victroryScreen() {
     childrenSound.pause();
@@ -517,6 +552,7 @@ function victroryScreen() {
     document.removeEventListener("keydown", keyPressed, true);
     document.removeEventListener("keyup", keyReleased, true);
     document.removeEventListener("keydown", pauseGame);
+    document.removeEventListener("keydown", escapeGame);
     canvas.removeEventListener("touchstart", handleMovement, true);
     enemies.length = 0;
     poos.length = 0;
@@ -532,10 +568,20 @@ function victroryScreen() {
     function repeatLevel() {
         victroryMenu.style.display = "none";
         nextLevel.removeEventListener("click", repeatLevel)
+        victory = false;
         startGame();
     }
     nextLevel.addEventListener("click", repeatLevel);
-    leaveGameButton.addEventListener("click", leaveGame);
+    function exitToMainMenuFromVictoryScreen() {
+        childrenSound.pause();
+        victory = false;
+        nextLevel.addEventListener("click", repeatLevel);
+        leaveGameVictory.removeEventListener("click", exitToMainMenuFromVictoryScreen);
+        toolbar.style.visibility = "hidden";
+        victroryMenu.style.display = "none";
+        showStartMenu();
+    }
+    leaveGameVictory.addEventListener("click", exitToMainMenuFromVictoryScreen);
 }
 function gameUpdate() {
     clearBoard();
@@ -609,10 +655,13 @@ function gameUpdate() {
             }
         });
     });
-    if (gameRunning && !gameOver && !victory && !countDownHasStarted) {
+    if (gameRunning && !gameOver && !victory && !countDownHasStarted && !gameEscape) {
         checkIfUserHasPausedTheGame();
     }
-    if (gameRunning && !gamePaused && !gameOver && !victory && !countDownHasStarted) {
+    if (gameRunning && !gameOver && !victory && !countDownHasStarted && !gamePaused) {
+        checkIfUserHasOpenedTheEscapeMenu()
+    }
+    if (gameRunning && !gamePaused && !gameOver && !victory && !countDownHasStarted && !gameEscape) {
         requestAnimationFrame(gameUpdate);
     }
 }
