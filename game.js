@@ -387,21 +387,23 @@ function startGame() {
     player.playerYCoordinate = (Math.random() * (canvas.height - 2 * player.playerHeight)) + player.playerHeight;
     if (localStorage.getItem("mobileDevice") === "true") {
         for (let i = 0; i < pooMax; i++) {
-            poos.push(new Poo(pooImage, (Math.random() * (canvas.width - 140)) + 70, (Math.random() * (canvas.height - 175)) + 105, 30, 30, 1, 1))[i];
+            poos.push(new Poo(pooImage, Math.round((Math.random() * (canvas.width - 140)) + 70), Math.round((Math.random() * (canvas.height - 175)) + 105), 30, 30, 1, 1))[i];
         }
 
         for (let i = 0; i < enemyMax; i++) {
-            enemies.push(new Enemy(enemyImage, (Math.random() * (canvas.width - 140)) + 70, (Math.random() * (canvas.height - 175)) + 105, 30, 30, 1, 1))[i];
+            enemies.push(new Enemy(enemyImage, Math.round((Math.random() * (canvas.width - 140)) + 70), Math.round((Math.random() * (canvas.height - 175)) + 105), 30, 30, 1, 1))[i];
         }
     }
     else {
         for (let i = 0; i < pooMax; i++) {
-            poos.push(new Poo(pooImage, (Math.random() * (canvas.width - 140)) + 70, (Math.random() * (canvas.height - 175)) + 105, 50, 50, 1, 1))[i];
+            poos.push(new Poo(pooImage, Math.round((Math.random() * (canvas.width - 140)) + 70), Math.round((Math.random() * (canvas.height - 175)) + 105), 50, 50, 1, 1))[i];
         }
 
         for (let i = 0; i < enemyMax; i++) {
-            enemies.push(new Enemy(enemyImage, (Math.random() * (canvas.width - 140)) + 70, (Math.random() * (canvas.height - 175)) + 105, 50, 50, 1, 1))[i];
+            enemies.push(new Enemy(enemyImage, Math.round((Math.random() * (canvas.width - 140)) + 70), Math.round((Math.random() * (canvas.height - 175)) + 105), 50, 50, 1, 1))[i];
         }
+
+        console.log(poos, enemies)
     }
     document.addEventListener("keydown", keyPressed, true);
     document.addEventListener("keyup", keyReleased, true);
@@ -610,6 +612,28 @@ function gameUpdate() {
                 victroryScreen();
             }
         }
+        for (let i = 0; i < poos.length; i++) {
+            if (poo.pooXCoordinate <= poos[i].pooXCoordinate + poos[i].pooWidth &&
+                poo.pooXCoordinate + poo.pooWidth >= poos[i].pooXCoordinate &&
+                poo.pooYCoordinate <= poos[i].pooYCoordinate + poos[i].pooHeight &&
+                poo.pooYCoordinate + poo.pooHeight >= poos[i].pooYCoordinate) {
+                let vCollision = { x: poo.pooXCoordinate - poos[i].pooXCoordinate, y: poo.pooYCoordinate - poos[i].pooYCoordinate };
+                let distance = Math.sqrt((poo.pooXCoordinate - poos[i].pooXCoordinate) * (poo.pooXCoordinate - poos[i].pooXCoordinate) + (poo.pooYCoordinate - poos[i].pooYCoordinate) * (poo.pooYCoordinate - poos[i].pooYCoordinate));
+                let vCollisionNorm = { x: vCollision.x / distance, y: vCollision.y / distance };
+                let correctionPoo = { x: vCollisionNorm.x + poo.pooWidth, y: vCollisionNorm.y + poo.pooHeight }
+                let newPooPos = { x: poo.pooXCoordinate + correctionPoo.x, y: poo.pooYCoordinate + correctionPoo.y }
+                let vRelativeVelocity = { x: poos[i].pooXValocity - poo.pooXValocity, y: poos[i].pooYValocity - poo.pooYValocity };
+                let speed = vRelativeVelocity.x * vCollisionNorm.x + vRelativeVelocity.y * vCollisionNorm.y;
+                poo.pooXCoordinate = newPooPos.x;
+                poo.pooYCoordinate = newPooPos.y;
+                if (speed > 0) {
+                    poos[i].pooXValocity -= (speed * vCollisionNorm.x);
+                    poos[i].pooYValocity -= (speed * vCollisionNorm.y);
+                    poo.pooXValocity += (speed * vCollisionNorm.x);
+                    poo.pooYValocity += (speed * vCollisionNorm.y);
+                }
+            }
+        }
     });
     enemies.forEach(enemy => {
         enemy.updateEnemy();
@@ -636,21 +660,47 @@ function gameUpdate() {
                 setTimeout(() => { immortal = false; }, 1000);
             }
         }
+        for (let i = 0; i < enemies.length; i++) {
+            if (enemy.enemyXCoordinate <= enemies[i].enemyXCoordinate + enemies[i].enemyWidth &&
+                enemy.enemyXCoordinate + enemy.enemyWidth >= enemies[i].enemyXCoordinate &&
+                enemy.enemyYCoordinate <= enemies[i].enemyYCoordinate + enemies[i].enemyHeight &&
+                enemy.enemyYCoordinate + enemy.enemyHeight >= enemies[i].enemyYCoordinate) {
+                let vCollision = { x: enemy.enemyXCoordinate - enemies[i].enemyXCoordinate, y: enemy.enemyYCoordinate - enemies[i].enemyYCoordinate };
+                let distance = Math.sqrt((enemy.enemyXCoordinate - enemies[i].enemyXCoordinate) * (enemy.enemyXCoordinate - enemies[i].enemyXCoordinate) + (enemy.enemyYCoordinate - enemies[i].enemyYCoordinate) * (enemy.enemyYCoordinate - enemies[i].enemyYCoordinate));
+                let vCollisionNorm = { x: vCollision.x / distance, y: vCollision.y / distance };
+                let correctionEnemy = { x: vCollisionNorm.x + enemy.enemyWidth, y: vCollisionNorm.y + enemy.enemyHeight }
+                let newEnemyPos = { x: enemy.enemyXCoordinate + correctionEnemy.x, y: enemy.enemyYCoordinate + correctionEnemy.y }
+                let vRelativeVelocity = { x: enemies[i].enemyXValocity - enemy.enemyXValocity, y: enemies[i].enemyYValocity - enemy.enemyYValocity };
+                let speed = vRelativeVelocity.x * vCollisionNorm.x + vRelativeVelocity.y * vCollisionNorm.y;
+                enemy.enemyXCoordinate = newEnemyPos.x;
+                enemy.enemyYCoordinate = newEnemyPos.y;
+                if (speed > 0) {
+                    enemies[i].enemyXValocity -= (speed * vCollisionNorm.x);
+                    enemies[i].enemyYValocity -= (speed * vCollisionNorm.y);
+                    enemy.enemyXValocity += (speed * vCollisionNorm.x);
+                    enemy.enemyYValocity += (speed * vCollisionNorm.y);
+                }
+            }
+        }
         poos.forEach(poo => {
             if (poo.pooXCoordinate <= enemy.enemyXCoordinate + enemy.enemyWidth &&
                 poo.pooXCoordinate + poo.pooWidth >= enemy.enemyXCoordinate &&
                 poo.pooYCoordinate <= enemy.enemyYCoordinate + enemy.enemyHeight &&
                 poo.pooYCoordinate + poo.pooHeight >= enemy.enemyYCoordinate) {
-                let vCollision = { x: `${poo.pooXCoordinate - enemy.enemyXCoordinate}`, y: `${poo.pooYCoordinate - enemy.enemyYCoordinate}` };
-                let distance = Math.sqrt((`${poo.pooXCoordinate - enemy.enemyXCoordinate}`) * (`${poo.pooXCoordinate - enemy.enemyXCoordinate}`) + (`${poo.pooYCoordinate - enemy.enemyYCoordinate}`) * (`${poo.pooYCoordinate - enemy.enemyYCoordinate}`));
+                let vCollision = { x: poo.pooXCoordinate - enemy.enemyXCoordinate, y: poo.pooYCoordinate - enemy.enemyYCoordinate };
+                let distance = Math.sqrt((poo.pooXCoordinate - enemy.enemyXCoordinate) * (poo.pooXCoordinate - enemy.enemyXCoordinate) + (poo.pooYCoordinate - enemy.enemyYCoordinate) * (poo.pooYCoordinate - enemy.enemyYCoordinate));
                 let vCollisionNorm = { x: vCollision.x / distance, y: vCollision.y / distance };
-                let vRelativeVelocity = { x: `${enemy.enemyXValocity - poo.pooXValocity}`, y: `${enemy.enemyYValocity - poo.pooYValocity}` };
+                let correctionPoo = { x: vCollisionNorm.x + poo.pooWidth, y: vCollisionNorm.y + poo.pooHeight };
+                let newPooPos = { x: poo.pooXCoordinate + correctionPoo.x, y: poo.pooYCoordinate + correctionPoo.y };
+                let vRelativeVelocity = { x: enemy.enemyXValocity - poo.pooXValocity, y: enemy.enemyYValocity - poo.pooYValocity };
                 let speed = vRelativeVelocity.x * vCollisionNorm.x + vRelativeVelocity.y * vCollisionNorm.y;
-                if (!(speed < 0)) {
-                    enemy.enemyXValocity -= speed * vCollisionNorm.x;
-                    enemy.enemyYValocity -= speed * vCollisionNorm.y;
-                    poo.pooXValocity += speed * vCollisionNorm.x;
-                    poo.pooYValocity += speed * vCollisionNorm.y;
+                poo.pooXCoordinate = newPooPos.x;
+                poo.pooYCoordinate = newPooPos.y;
+                if (speed > 0) {
+                    enemy.enemyXValocity -= (speed * vCollisionNorm.x);
+                    enemy.enemyYValocity -= (speed * vCollisionNorm.y);
+                    poo.pooXValocity += (speed * vCollisionNorm.x);
+                    poo.pooYValocity += (speed * vCollisionNorm.y);
                 }
             }
         });
