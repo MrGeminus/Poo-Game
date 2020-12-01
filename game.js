@@ -339,6 +339,10 @@ function showCountdown() {
         else if (currentT > milestoneFive) {
             clearInterval(x);
             countDownHasStarted = false;
+            keysArray[mu] = false;
+            keysArray[md] = false;
+            keysArray[ml] = false;
+            keysArray[mr] = false;
             countdownGo.style.opacity = "0";
             countdownOne.style.display = "none";
             countdownTwo.style.display = "none";
