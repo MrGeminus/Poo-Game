@@ -624,8 +624,6 @@ function gameUpdate() {
                 let newPooPos = { x: poo.pooXCoordinate + correctionPoo.x, y: poo.pooYCoordinate + correctionPoo.y }
                 let vRelativeVelocity = { x: poos[i].pooXValocity - poo.pooXValocity, y: poos[i].pooYValocity - poo.pooYValocity };
                 let speed = vRelativeVelocity.x * vCollisionNorm.x + vRelativeVelocity.y * vCollisionNorm.y;
-                poo.pooXCoordinate = newPooPos.x;
-                poo.pooYCoordinate = newPooPos.y;
                 if (speed > 0) {
                     poos[i].pooXValocity -= (speed * vCollisionNorm.x);
                     poos[i].pooYValocity -= (speed * vCollisionNorm.y);
@@ -672,8 +670,6 @@ function gameUpdate() {
                 let newEnemyPos = { x: enemy.enemyXCoordinate + correctionEnemy.x, y: enemy.enemyYCoordinate + correctionEnemy.y }
                 let vRelativeVelocity = { x: enemies[i].enemyXValocity - enemy.enemyXValocity, y: enemies[i].enemyYValocity - enemy.enemyYValocity };
                 let speed = vRelativeVelocity.x * vCollisionNorm.x + vRelativeVelocity.y * vCollisionNorm.y;
-                enemy.enemyXCoordinate = newEnemyPos.x;
-                enemy.enemyYCoordinate = newEnemyPos.y;
                 if (speed > 0) {
                     enemies[i].enemyXValocity -= (speed * vCollisionNorm.x);
                     enemies[i].enemyYValocity -= (speed * vCollisionNorm.y);
@@ -694,8 +690,6 @@ function gameUpdate() {
                 let newPooPos = { x: poo.pooXCoordinate + correctionPoo.x, y: poo.pooYCoordinate + correctionPoo.y };
                 let vRelativeVelocity = { x: enemy.enemyXValocity - poo.pooXValocity, y: enemy.enemyYValocity - poo.pooYValocity };
                 let speed = vRelativeVelocity.x * vCollisionNorm.x + vRelativeVelocity.y * vCollisionNorm.y;
-                poo.pooXCoordinate = newPooPos.x;
-                poo.pooYCoordinate = newPooPos.y;
                 if (speed > 0) {
                     enemy.enemyXValocity -= (speed * vCollisionNorm.x);
                     enemy.enemyYValocity -= (speed * vCollisionNorm.y);
