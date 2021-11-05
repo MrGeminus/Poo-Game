@@ -14,7 +14,7 @@ This is a simple 2D JavaScript game.
 
 ### Screenshot
 
-![](img/https://github.com/MrGeminus/Poo-Game/blob/main/img/PooGame.png?raw=true)
+![](https://github.com/MrGeminus/Poo-Game/blob/main/img/PooGame.png?raw=true)
 
 ### Links
 
